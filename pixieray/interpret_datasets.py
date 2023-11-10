@@ -5,7 +5,16 @@ import json
 print(os.getcwd())
 
 # Annahme: Deine JSON-Datei heißt 'daten.json'
-for i in range(3):
+import pandas as pd
+import json
+
+# Pfad zur Excel-Datei
+excel_datei = 'driving_p1_round1.xlsx'
+
+# Initialisiere einen leeren DataFrame, um Daten aus allen Schleifendurchläufen zu kombinieren
+df_combined = pd.DataFrame()
+
+for i in range(4):
     json_datei_afe = f'datasets/driving/Participant_1/AFE_00{i}_CONFIDENTIAL.json'
     json_datei_imu = f"datasets/driving/Participant_1/IMU_00{i}_CONFIDENTIAL.json"
 
@@ -29,11 +38,15 @@ for i in range(3):
     columns_df_imu = ['t', 'i', 'v']
     df_afe[columns_df_imu] = df_imu[columns_df_imu]
 
-# Erste Übersicht der Daten anzeigen
-print("Erste Übersicht der Daten:")
-print(df_afe.head())
+    # Füge die Daten des aktuellen Durchlaufs zum kombinierten DataFrame hinzu
+    df_combined = pd.concat([df_combined, df_afe], ignore_index=True)
 
-excel_datei = 'driving_p1_round1.xlsx'
+# Erste Übersicht der kombinierten Daten anzeigen
+print("Erste Übersicht der kombinierten Daten:")
+print(df_combined.head())
 
 # DataFrame in Excel speichern
-df_afe.to_excel(excel_datei, index=False)
+df_combined.to_excel(excel_datei, index=False)
+
+print(f"DataFrame wurde erfolgreich in {excel_datei} gespeichert.")
+
