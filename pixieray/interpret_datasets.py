@@ -21,4 +21,4 @@ print(df.head())
 excel_datei = 'first_summary.xlsx'
 
 # DataFrame in Excel speichern
-df.head().to_excel(excel_datei, index=False)
+df.to_excel(excel_datei, index=False)
