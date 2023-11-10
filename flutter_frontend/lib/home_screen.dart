@@ -2,7 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:junction23/constants/design.dart';
+import 'package:junction23/features/activity/presentation/activity_overview_screen.dart';
 import 'package:junction23/features/authentication/domain/user_model.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/mdi.dart';
+import 'package:colorful_iconify_flutter/icons/twemoji.dart';
+import 'package:junction23/features/authentication/presentation/profile/profile_screen.dart';
+import 'package:junction23/features/character/presentation/avatar_screen.dart';
 import 'package:junction23/features/routing/app_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,74 +28,80 @@ class _HomeScreenState extends State<HomeScreen> {
     _getCurrentUser = getCurrentUser();
   }
 
+  int contentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
       body: Stack(children: [
         FutureBuilder(
             future: _getCurrentUser,
             builder: ((context, snapshot) {
               // if snapshot has data convert snapshot to UserModel and show full app
               if (snapshot.hasData) {
-                // if it is null navigate to login screen
-                if (snapshot.data == null) {
-                  print("here");
-                  Navigator.pushNamed(context, AppRouting.signUp);
-                }
                 // if snapshot has user show home screen
+                UserModel userModel = snapshot.data as UserModel;
 
-                return Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      const Text('Welcome'),
-                      const SizedBox(height: 20),
-                      Text(snapshot.data!.name),
-                      const SizedBox(height: 20),
-                      Text(snapshot.data!.email),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          FirebaseAuth.instance.signOut();
-                          Navigator.pushNamed(context, '/login');
-                        },
-                        child: const Text('Sign Out'),
-                      ),
-                    ],
-                  ),
-                );
+                switch (contentIndex) {
+                  case 0:
+                    return AvatarScreen(userModel: userModel);
+                  case 1:
+                    return ActivityOverviewScreen(userModel: userModel);
+                  case 2:
+                    return ProfileScreen(userModel: userModel);
+                }
               }
 
               // if snapshot is loading show progress indicator
               return const Center(child: CircularProgressIndicator());
             }))
       ]),
-      bottomNavigationBar: customBottomNavigationBar(),
+      bottomNavigationBar: bottomNavigationBar(),
     );
   }
 
-  BottomNavigationBar customBottomNavigationBar() {
+  BottomNavigationBar bottomNavigationBar() {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Iconify(Mdi.cat),
+          label: 'Avatar',
         ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today), label: 'Calendar'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+          icon: Iconify(
+            Twemoji.flexed_biceps,
+            color: black,
+          ),
+          label: 'Activity',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+        ),
       ],
       currentIndex: 0,
-      selectedItemColor: Colors.deepPurple,
-      onTap: (index) {},
+      selectedItemColor: Colors.amber[800],
+      onTap: (index) {
+        setState(() {
+          switch (index) {
+            case 0:
+              contentIndex = 0;
+              break;
+            case 1:
+              contentIndex = 1;
+              break;
+            case 2:
+              contentIndex = 2;
+              break;
+          }
+        });
+      },
     );
   }
 
   Future<UserModel?> getCurrentUser() async {
     User? user = FirebaseAuth.instance.currentUser;
+
     if (user != null) {
       // get User Model from firebase
       UserModel userModel = await FirebaseFirestore.instance

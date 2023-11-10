@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Login'),
+          title: const Center(child: Text('Login')),
           leading: const SizedBox(),
         ),
         body: Stack(children: [
