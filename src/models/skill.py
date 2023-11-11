@@ -60,4 +60,3 @@ class StepSkill(GeneralSkill):
             4: 900,
             5: 1500
         }
-        self.assoc_sensor = Sensor()

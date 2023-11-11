@@ -23,16 +23,15 @@ class Avatar:
         self.inventory = self.init_cosmetic()
 
 
-
     @staticmethod
     def init_skills():
         health = Health()
-        steps = StepSkill()
+        step = StepSkill()
 
         return {
             # TODO: CHANGE HEALTH NAMING
             "General Health": health,
-            "Steps": steps,
+            "Steps": step
         }
 
     def init_challenges(self):
@@ -40,10 +39,11 @@ class Avatar:
         PARAMETER: name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value
         :return:
         """
+
         challenges = [
-            Challenge("Step it up!", f"Walk {str(2000)} steps today!", "walking", 10, 5, 745, 2000),
-            Challenge("Swim", f"swim 10 minutes!", "swimming", 10, 5, 0, 10),
-            Challenge("Drive your bike", f"Drive 1km", "biking", 10, 5, 0, 2),
+            Challenge("Step it up!", f"Walk {str(2000)} steps today!","Step", 10, 5, 745, 2000),
+            Challenge("Swim", f"swim 10 minutes!", 10, 5, 0, 10),
+            Challenge("Drive your bike", f"Drive 1km", 10, 5, 0, 2),
         ]
 
         self.challenges = challenges

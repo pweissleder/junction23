@@ -10,7 +10,7 @@ class Status(Enum):
 
 
 class Challenge:
-    def __init__(self, name, description="", assoc_skill=None, xp_reward=0, coin_reward=0, sensor_start_value=0, target_value=0):
+    def __init__(self, name, description="", assoc_skill="", xp_reward=0, coin_reward=0, sensor_start_value=0, target_value=0):
         self.name = name
         self.description = description
         self.assoc_skill = assoc_skill
@@ -21,11 +21,10 @@ class Challenge:
         self.target_value = target_value
         self.progress = 0
 
-    def get_current_value(self):
-        return self.assoc_skill.assoc_sensor.value
+
 
     def calc_progress(self):
-        self.progress =  self.get_current_value() / (self.target_value + self.sensor_start_value)
+        self.progress = self.get_current_value() / (self.target_value + self.sensor_start_value)
 
     def check_completion(self):
         """
@@ -39,11 +38,11 @@ class Challenge:
         challenge_data = {
             "name": self.name,
             "description": self.description,
-            "assoc_skill": self.assoc_skill.to_json(),
+            "assoc_skill": self.assoc_skill,
             "xp_reward": self.xp_reward,
             "coin_reward": self.coin_reward,
             "status": "active",
-            "sensor_start_value" : self.sensor_start_value,
+            "sensor_start_value": self.sensor_start_value,
             "target_value": self.target_value
         }
         return challenge_data
