@@ -15,23 +15,23 @@ class Challenge:
         self.assoc_skill = assoc_skill
         self.xp_reward = xp_reward
         self.coin_reward = coin_reward
-        self.status = Status.INACTIVE
+        self.status = Status.ACTIVE
         self.sensor_start_value = sensor_start_value
         self.target_value = target_value
+        self.progress = 0
 
     def get_current_value(self):
         return self.assoc_skill.assoc_sensor.value
 
     def calc_progress(self):
-        return self.get_current_value() / (self.target_value + self.sensor_start_value)
+        self.progress =  self.get_current_value() / (self.target_value + self.sensor_start_value)
 
     def check_completion(self):
         """
         Needs Updateloop. Uses updated sensor data which itself is updated by pushed
         from the sensordata of the device
         """
-        progress = self.calc_progress()
-        if progress == 1:
+        if self.progress == 1:
             self.status = Status.COMPLETED
 
 

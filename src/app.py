@@ -2,6 +2,10 @@ import json
 
 from flask import Flask, jsonify, request
 from src.models.avatar import Avatar
+import firebase_admin
+import os
+from firebase_admin import credentials
+from firebase_admin import firestore
 
 app = Flask(__name__)
 
@@ -35,15 +39,13 @@ def init_user():
     user_id = data.get('userid')
     name = data.get('name')
 
-    avatar = Avatar(user_id, name)
+    avatar = Avatar(user_id, name,)
     avatar_data = json.loads(avatar.to_json())
 
-    import firebase_admin
-    import os
-    from firebase_admin import credentials
-    from firebase_admin import firestore
+
 
     current_directory = os.getcwd()
+    print(current_directory)
     service_account_key_path = os.path.join(current_directory, 'config', 'serviceAccountKey.json')
 
     # Initialize Firebase Admin SDK with the dynamically determined path
@@ -75,21 +77,23 @@ def complete_chall():
     ## Shop
 @app.route('/shop/buy', methods=['GET', 'POST'])
 def shop_buy():
-    """
-    ONLY FOR CONNECTION TESTING
-    """
     if request.method == "POST":
         print("Flutter has successfully sent POST data on the buy endpoint")
-        data = request.json
-        # get ID
+        data = json.loads(request.data)
+        user_id = data.get('userid')
+        cosmetic_id = data.get('cosmetic_id')
+        # Initialize Firestore database
+        db = firestore.client()
+
+        # Create or update the user document in Firestore
+        user_ref = db.collection('users').document(user_id)
+        user_ref.set(avatar_data)
         # get Avatar
         # get Inventory
         # find item
         # call buy
 
         return jsonify({"message": "Ok"})
-
-
 
 
 

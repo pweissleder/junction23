@@ -1,8 +1,7 @@
 import json
 
 from src.models.challenge import Challenge
-from src.models.cosmetic import init_cosmetics
-from src.models.inventory import Inventory
+from src.models.cosmetic import init_cosmetics, Cosmetic
 from src.models.skill import Health
 
 
@@ -22,7 +21,8 @@ class Avatar:
         # Game information
         self.skills = self.init_skills()
         self.challenges = []
-        self.inventory = Inventory()
+        self.inventory = self.init_cosmetic()
+
 
 
     @staticmethod
@@ -59,6 +59,13 @@ class Avatar:
         """
         pass
 
+    def init_cosmetic(self):
+        inventory = {}
+        new_cosmetic = init_cosmetics()
+        inventory[new_cosmetic.id] = new_cosmetic
+        return inventory
+
+
     def to_json(self):
         avatar_dict = {
             "user_id": self.id,
@@ -68,6 +75,7 @@ class Avatar:
             "height": self.height,
             "weight": self.weight,
             "skills": {skill: skill_data.to_json() for skill, skill_data in self.skills.items()},
-            "challenges": self.challenges
+            "challenges": self.challenges,
+            "inventory": {inventory: cosmetic_data.to_json() for inventory, cosmetic_data in self.inventory.items()}
         }
         return json.dumps(avatar_dict, indent=4)
