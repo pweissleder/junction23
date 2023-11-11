@@ -44,7 +44,7 @@ def play_video(video_path):
 
 if __name__ == "__main__":
     mp4_path = "datasets/driving/Participant_1/Participant_1-Driving-720p.mp4"
-    gif_path = "driving_1000timestaps.mp4"
+    gif_path = "driving_5k.mp4"
 
     process1 = multiprocessing.Process(target=play_video, args=(mp4_path,))
     process2 = multiprocessing.Process(target=play_video, args=(gif_path,))

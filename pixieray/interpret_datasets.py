@@ -15,15 +15,15 @@ print(os.getcwd())
 
 def get_data():
     # Pfad zur Excel-Datei
-    excel_datei = 'driving_p1_round1.xlsx'
-    csv_datei = 'driving_p1_round1.csv'
+    excel_datei = 'indoor_p2_round1.xlsx'
+    csv_datei = 'indoor_p2_round1.csv'
 
     # Initialisiere einen leeren DataFrame, um Daten aus allen Schleifendurchläufen zu kombinieren
     df_combined = pd.DataFrame()
 
     for i in range(4):
-        json_datei_afe = f'datasets/driving/Participant_1/AFE_00{i}_CONFIDENTIAL.json'
-        json_datei_imu = f"datasets/driving/Participant_1/IMU_00{i}_CONFIDENTIAL.json"
+        json_datei_afe = f'datasets/indoor/Participant_2/AFE_00{i}_CONFIDENTIAL.json'
+        json_datei_imu = f"datasets/indoor/Participant_2/IMU_00{i}_CONFIDENTIAL.json"
 
         # DataFrame aus der JSON-Datei erstellen
         with open(json_datei_afe, 'r') as f:
@@ -212,11 +212,11 @@ def get_fps(video_path):
 
 ###MAIN
 
-#get_data()
+get_data()
 
-csv_datei = 'driving_p1_round1.csv'
-df = pd.read_csv(csv_datei)
-df = df.head(100)
+# csv_datei = 'driving_p1_round1.csv'
+# df = pd.read_csv(csv_datei)
+# df = df.head(100)
 
 
 #analysis_dataframe(df)
@@ -229,4 +229,4 @@ df = df.head(100)
 #df = df.head(30)
 #visualize_eyemovement(df)
 
-vid_eyemovement(df, "driving_test.gif")
+#vid_eyemovement(df, "driving_test.gif")
