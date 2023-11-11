@@ -30,10 +30,38 @@ def init_user():
     """
     Initialize the current user and write to firebase
     """
+    user_id = request.form.get('userid')
+    name = request.form.get('name')
 
-    avatar = Avatar(request.form.get('name'))
+    avatar = Avatar(user_id, name)
+    avatar_data = avatar.to_json()
 
-    # TODO: Write user to firebase
+    import firebase_admin
+    import os
+    from firebase_admin import credentials
+    from firebase_admin import firestore
+
+    current_directory = os.getcwd()
+    service_account_key_path = os.path.join(current_directory, 'config', 'serviceAccountKey.json')
+
+    # Initialize Firebase Admin SDK with the dynamically determined path
+    cred = credentials.Certificate(service_account_key_path)
+    firebase_admin.initialize_app(cred)
+
+    # Initialize Firestore database
+    db = firestore.client()
+
+    # Create or update the user document in Firestore
+    user_ref = db.collection('users').document(user_id)
+    user_ref.set(avatar_data)
+
+    # Close Firebase Admin SDK
+    firebase_admin.delete_app(firebase_admin.get_app())
+
+    return 200
+
+
+
 
 @app.route('/api/chall_completed', methods=['POST'])
 def complete_chall():

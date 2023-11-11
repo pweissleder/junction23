@@ -1,12 +1,14 @@
 import json
 
+from src.models.challenge import Challenge
 from src.models.cosmetic import init_cosmetics
 from src.models.skill import Health, WalkingSkill
 
 
 class Avatar:
-    def __init__(self, name, age=None, height=None, weight=None, gender=None):
+    def __init__(self, userid, name, age=None, height=None, weight=None, gender=None):
 
+        self.id = userid
         self.name = name
 
         # Personal data
@@ -17,10 +19,10 @@ class Avatar:
         self.weight = weight
 
         # Game information
-        self.skills = self.init_skills()
-        #self.challenges = {}
+        # self.skills = self.init_skills()
+        # self.challenges = []
         # self.inventory
-
+        # self.cosmetics
 
     @staticmethod
     def init_skills():
@@ -29,13 +31,14 @@ class Avatar:
 
         return {
             # TODO: CHANGE HEALTH NAMING
-            "Health": health,
+            "General Health": health,
             "Walking": walking,
         }
 
-    def add_challenge(self):
-        Challenge()
-        pass
+    def add_challenge(self, name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value):
+        new_chall = Challenge(name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value)
+
+        # self.challenges.append(new_chall)
 
     def complete_challenge(self, associated_skill, xp):
         """
@@ -62,7 +65,7 @@ class Avatar:
             "gender": self.gender,
             "height": self.height,
             "weight": self.weight,
-            "skills": self.skills,
-            "active_challenges": self.challenges
+            # "skills": self.skills,
+            # "active_challenges": self.challenges
         }
         return json.dumps(avatar_dict, indent=4)
