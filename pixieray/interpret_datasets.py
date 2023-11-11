@@ -48,17 +48,17 @@ def get_data():
 
         df_afe['ticktime'] = df_afe['afe'].apply(lambda x: x[1]['i'][0] if len(x) > 1 and x[1] else None)
         df_afe['timestamp'] = df_afe['afe'].apply(lambda x: x[1]['i'][1] if len(x) > 1 and x[1] else None)
-        df_afe['afe_counter'] = df_afe['afe'].apply(lambda x: x[1]['i'][2] if len(x) > 1 and x[1] else None)
-        df_afe['afe_R_STATUS'] = df_afe['afe'].apply(lambda x: x[1]['i'][3] if len(x) > 1 and x[1] else None)
-        df_afe['afe_L_STATUS'] = df_afe['afe'].apply(lambda x: x[0]['i'][3] if len(x) > 0 and x[0] else None)
+        df_afe['afe_counter'] = df_afe['afe'].apply(lambda x: x[1]['i'][3] if len(x) > 1 and x[1] else None)
+        df_afe['afe_R_STATUS'] = df_afe['afe'].apply(lambda x: x[1]['i'][2] if len(x) > 1 and x[1] else None)
+        df_afe['afe_L_STATUS'] = df_afe['afe'].apply(lambda x: x[0]['i'][2] if len(x) > 0 and x[0] else None)
 
         df_afe['lightsensor_STATUS'] = df_afe['auxSensors_lightAmbient_i'].apply(lambda x: x[2] if len(x) > 0 and x[0] else None)
         df_afe['lightsensor_counter'] = df_afe['auxSensors_lightAmbient_i'].apply(lambda x: x[3] if len(x) > 0 and x[0] else None)
 
         df_afe['lightsensor_uv1'] = df_afe['auxSensors_lightAmbient_v'].apply(lambda x: x[0] if len(x) > 0 and x[0] else None)
-        df_afe['lightsensor_uv2'] = df_afe['auxSensors_lightAmbient_i'].apply(lambda x: x[1] if len(x) > 0 and x[0] else None)
-        df_afe['lightsensor_ambient'] = df_afe['auxSensors_lightAmbient_i'].apply(lambda x: x[2] if len(x) > 0 and x[0] else None)
-        df_afe['lightsensor_ir'] = df_afe['auxSensors_lightAmbient_i'].apply(lambda x: x[3] if len(x) > 0 and x[0] else None)
+        df_afe['lightsensor_uv2'] = df_afe['auxSensors_lightAmbient_v'].apply(lambda x: x[1] if len(x) > 0 and x[0] else None)
+        df_afe['lightsensor_ambient'] = df_afe['auxSensors_lightAmbient_v'].apply(lambda x: x[2] if len(x) > 0 and x[0] else None)
+        df_afe['lightsensor_ir'] = df_afe['auxSensors_lightAmbient_v'].apply(lambda x: x[3] if len(x) > 0 and x[0] else None)
 
         df_afe.drop('afe', axis=1, inplace=True)
         df_afe.drop('auxSensors_lightAmbient_n', axis=1, inplace=True)
@@ -141,45 +141,6 @@ def visualize_eyemovement(df):
         ax.text(df['imu_x'][i], df['imu_y'][i], df['imu_z'][i], str(i + 1), color='red')
 
     plt.savefig('scatter_plot.png')
-
-###STATE 3 vid of the eye movement
-# def vid_eyemovement(df):
-#
-#     # Erstelle ein 3D-Figurenobjekt
-#     fig = plt.figure(figsize=(10, 10))
-#     ax = fig.add_subplot(111, projection='3d')
-#
-#     # Initialisiere leeren Scatter-Plot
-#     scatter = ax.scatter([], [], [], c=[], cmap='viridis', s=50)
-#
-#     # Füge eine Farbskala hinzu
-#     cbar = fig.colorbar(scatter, ax=ax, label='Zeit')
-#
-#     # Beschriftungen der Achsen
-#     ax.set_xlabel('X-Achse')
-#     ax.set_ylabel('Y-Achse')
-#     ax.set_zlabel('Z-Achse')
-#
-#     # Titel des Diagramms
-#     ax.set_title('4-D Koordinatensystem')
-#
-#     ax.set_xlim(-8, 8)
-#     ax.set_ylim(5, 15)
-#     ax.set_zlim(-8, 8)
-#
-#     def update(frame):
-#         x = df['imu_x'][:frame + 1]
-#         y = df['imu_y'][:frame + 1]
-#         z = df['imu_z'][:frame + 1]
-#         timestamp = df['afe_timestamp'][:frame + 1]
-#
-#         scatter = ax.scatter(x, y, z, c=timestamp, cmap='viridis', s=50)
-#
-#     # Create the animation
-#     animation = FuncAnimation(fig, update, frames=len(df['afe_timestamp']), interval=1000, repeat=False)
-#
-#     gif_datei = 'animation.gif'
-#     animation.save(gif_datei, writer='ffmpeg', fps=30)
 
 
 
