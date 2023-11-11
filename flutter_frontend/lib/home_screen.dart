@@ -7,6 +7,7 @@ import 'package:junction23/features/activity/presentation/activity_overview_scre
 import 'package:junction23/features/authentication/domain/user_model.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
+// ignore: depend_on_referenced_packages
 import 'package:colorful_iconify_flutter/icons/twemoji.dart';
 import 'package:junction23/features/authentication/presentation/profile/profile_screen.dart';
 import 'package:junction23/features/character/presentation/avatar_screen.dart';
@@ -24,15 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int contentIndex = 0;
   StepSimulator simulator = StepSimulator();
-
+  late DocumentReference docRef;
   @override
   void initState() {
     super.initState();
     _getCurrentUser = getCurrentUser();
-    simulator.stepStream.listen((stepData) {
-      print(
-          'Total Steps: ${stepData.totalSteps}, Timestamp: ${stepData.timestamp}');
-    });
+    //simulator.stepStream.listen((stepData) {});
   }
 
   @override
@@ -46,6 +44,20 @@ class _HomeScreenState extends State<HomeScreen> {
               if (snapshot.hasData) {
                 // if snapshot has user show home screen
                 UserModel userModel = snapshot.data as UserModel;
+                docRef = FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(userModel.id);
+                docRef.snapshots().listen(
+                  (event) {
+                    final source =
+                        (event.metadata.hasPendingWrites) ? "Local" : "Server";
+                    if (source == "Server") {
+                      userModel = UserModel.fromJson(
+                          event.data()! as Map<String, dynamic>);
+                    }
+                  },
+                  onError: (error) => print("Listen failed: $error"),
+                );
 
                 switch (contentIndex) {
                   case 0:
@@ -119,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+      print("called");
       // get User Model from firebase
       UserModel userModel = await FirebaseFirestore.instance
           .collection('users')

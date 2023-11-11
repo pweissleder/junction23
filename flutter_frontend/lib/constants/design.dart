@@ -49,3 +49,14 @@ const h7 = 15.0;
 const h8 = 11.0;
 
 const paragraph = 21.0;
+
+// IMAGES
+const happy_face = "assets/avatar/Face_Happy.png";
+const sad_face = "assets/avatar/Face_Sad.png";
+const neutral_face = "assets/avatar/Face_Neutral.png";
+
+const body_large_arms_normal = "assets/avatar/Body_Large_Arms-Normal.png";
+const body_large_arms_down = "assets/avatar/Body_Large_Arms-Down.png";
+const body_large_arms_up = "assets/avatar/Body_Large_Arms-Up.png";
+
+const body_large_shadow = "assets/avatar/Body_Large_Shadow.png";
