@@ -10,7 +10,7 @@ import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:colorful_iconify_flutter/icons/twemoji.dart';
 import 'package:junction23/features/authentication/presentation/profile/profile_screen.dart';
 import 'package:junction23/features/character/presentation/avatar_screen.dart';
-import 'package:junction23/features/routing/app_router.dart';
+import 'package:junction23/features/sensors/data/get_sensor_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,13 +22,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late Future<UserModel?> _getCurrentUser = getCurrentUser();
 
+  int contentIndex = 0;
+  StepSimulator simulator = StepSimulator();
+
   @override
   void initState() {
     super.initState();
     _getCurrentUser = getCurrentUser();
+    simulator.stepStream.listen((stepData) {
+      print(
+          'Total Steps: ${stepData.totalSteps}, Timestamp: ${stepData.timestamp}');
+    });
   }
-
-  int contentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -64,23 +69,34 @@ class _HomeScreenState extends State<HomeScreen> {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(
-          icon: Iconify(Mdi.cat),
+          icon: Iconify(
+            Mdi.cat,
+            size: 35,
+          ),
           label: 'Avatar',
         ),
         BottomNavigationBarItem(
           icon: Iconify(
             Twemoji.flexed_biceps,
             color: black,
+            size: 30,
           ),
           label: 'Activity',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(
+            Icons.person,
+            color: black,
+            size: 35,
+          ),
           label: 'Profile',
         ),
       ],
-      currentIndex: 0,
+      currentIndex: contentIndex,
       selectedItemColor: Colors.amber[800],
+      selectedLabelStyle:
+          const TextStyle(fontWeight: FontWeight.bold, fontSize: h7 + 2),
+      unselectedFontSize: h7 + 2,
       onTap: (index) {
         setState(() {
           switch (index) {

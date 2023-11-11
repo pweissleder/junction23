@@ -46,6 +46,7 @@ MERGED from C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\
 MERGED from [:firebase_auth] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\firebase_auth\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:cloud_firestore] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_core] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
+MERGED from [:pedometer] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\pedometer\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.firebase:firebase-auth:22.2.0] C:\Users\breuer-l\.gradle\caches\transforms-3\e2985a72aa3bbd89cdc07e779b53a1db\transformed\jetified-firebase-auth-22.2.0\AndroidManifest.xml:17:1-75:12
 MERGED from [com.google.firebase:firebase-firestore:24.9.1] C:\Users\breuer-l\.gradle\caches\transforms-3\ff5d5227bdab1c4e352be813df977ac3\transformed\jetified-firebase-firestore-24.9.1\AndroidManifest.xml:2:1-26:12
 MERGED from [com.google.firebase:firebase-common-ktx:20.4.2] C:\Users\breuer-l\.gradle\caches\transforms-3\3716f3774b9df13860dc280c4dfee53a\transformed\jetified-firebase-common-ktx-20.4.2\AndroidManifest.xml:2:1-18:12
@@ -110,6 +111,8 @@ MERGED from [:cloud_firestore] C:\Users\breuer-l\Desktop\Programmieren\Hackathon
 MERGED from [:cloud_firestore] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_core] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:firebase_core] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:pedometer] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\pedometer\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:pedometer] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\pedometer\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.firebase:firebase-auth:22.2.0] C:\Users\breuer-l\.gradle\caches\transforms-3\e2985a72aa3bbd89cdc07e779b53a1db\transformed\jetified-firebase-auth-22.2.0\AndroidManifest.xml:21:5-23:64
 MERGED from [com.google.firebase:firebase-auth:22.2.0] C:\Users\breuer-l\.gradle\caches\transforms-3\e2985a72aa3bbd89cdc07e779b53a1db\transformed\jetified-firebase-auth-22.2.0\AndroidManifest.xml:21:5-23:64
 MERGED from [com.google.firebase:firebase-firestore:24.9.1] C:\Users\breuer-l\.gradle\caches\transforms-3\ff5d5227bdab1c4e352be813df977ac3\transformed\jetified-firebase-firestore-24.9.1\AndroidManifest.xml:6:5-44
