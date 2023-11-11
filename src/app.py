@@ -10,6 +10,7 @@ from firebase_admin import firestore
 
 from src.models.cosmetic import Cosmetic
 from src.models.sensor import Sensor
+from src.models.skill import GeneralSkill
 
 app = Flask(__name__)
 
@@ -40,10 +41,16 @@ def init_user():
     Initialize the current user and write to firebase
     """
     data = json.loads(request.data)
-    user_id = data.get('userid')
-    name = data.get('name')
+    user_id = data.get('user_id')
+    username = data.get('username')
 
-    avatar = Avatar(user_id, name)
+    name = data.get('name')
+    age = data.get('age')
+    height = data.get('height')
+    weight = data.get('weight')
+    gender = data.get('gender')
+
+    avatar = Avatar(user_id, username, name, height, age, weight, gender)
     avatar.init_challenges()
     avatar_data = json.loads(avatar.to_json())
 
@@ -219,7 +226,7 @@ def update_sensor():
         print("Flutter has successfully sent POST data on the buy endpoint")
         data = json.loads(request.data)
         user_id = data.get('user_id')
-        sensor = data.get('sensor')
+        skill = data.get('skill')
         value = data.get('value')
 
 
@@ -236,13 +243,15 @@ def update_sensor():
                 data = doc.to_dict()
                 skills = dict(data.get('skills'))
 
-                if skill := Sensor(skills.get(sensor)):
-                    skill.update_sensor_data(value)
-                    skills[sensor] = skill
+                if new_skill := skills.get(skill):
+                    sensor = new_skill['assoc_sensor']
+                    sensor['value'] = value
+                    new_skill['assoc_sensor'] = sensor
+                    skills[skill] = new_skill
                     data['skills'] = skills
                     user_ref.update(data)
                 else:
-                    print(f"Sensor {sensor} does not exist.")
+                    print(f"Sensor or {skill} does not exist.")
             else:
                 print(f"Document {user_id} does not exist.")
         except Exception as e:

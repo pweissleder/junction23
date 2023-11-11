@@ -48,5 +48,5 @@ class Cosmetic:
 
 #TODO Hardcode cosmetics
 def init_cosmetics():
-        return Cosmetic(1,"Bobby")
+        return Cosmetic("1","Bobby")
 

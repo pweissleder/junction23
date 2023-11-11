@@ -6,8 +6,9 @@ from src.models.skill import Health, StepSkill, GeneralSkill
 
 
 class Avatar:
-    def __init__(self, userid, name, age=None, height=None, weight=None, gender=None):
+    def __init__(self, userid,username, name, age=None, height=None, weight=None, gender=None):
         self.id = userid
+        self.username = username
         self.name = name
 
         # Personal data
@@ -77,7 +78,6 @@ class Avatar:
             "height": self.height,
             "weight": self.weight,
             "skills": {skill: skill_data.to_json() for skill, skill_data in self.skills.items()},
-            "challenges": self.challenges,
             "inventory": {inventory: cosmetic_data.to_json() for inventory, cosmetic_data in self.inventory.items()}
         }
         return json.dumps(avatar_dict, indent=4)
