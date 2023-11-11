@@ -2,12 +2,13 @@ import json
 
 from src.models.challenge import Challenge
 from src.models.cosmetic import init_cosmetics, Cosmetic
-from src.models.skill import Health
+from src.models.skill import Health, StepSkill, GeneralSkill
 
 
 class Avatar:
-    def __init__(self, userid, name, age=None, height=None, weight=None, gender=None):
+    def __init__(self, userid,username, name, age=None, height=None, weight=None, gender=None):
         self.id = userid
+        self.username = username
         self.name = name
 
         # Personal data
@@ -23,16 +24,15 @@ class Avatar:
         self.inventory = self.init_cosmetic()
 
 
-
     @staticmethod
     def init_skills():
         health = Health()
-        # walking = StepSkill()
+        step = StepSkill()
 
         return {
             # TODO: CHANGE HEALTH NAMING
             "General Health": health,
-            # "Walking": walking,
+            "Steps": step
         }
 
     def init_challenges(self):
@@ -40,24 +40,25 @@ class Avatar:
         PARAMETER: name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value
         :return:
         """
+
         challenges = [
-            Challenge("Step it up!", f"Walk {str(2000)} steps today!", "walking", 10, 5, 745, 2000),
-            Challenge("Swim", f"swim 10 minutes!", "swimming", 10, 5, 0, 10),
-            Challenge("Drive your bike", f"Drive 1km", "biking", 10, 5, 0, 2),
+            Challenge("Step it up!", f"Walk {str(2000)} steps today!","Step", 10, 5, 745, 2000),
+            Challenge("Swim", f"swim 10 minutes!", 10, 5, 0, 10),
+            Challenge("Drive your bike", f"Drive 1km", 10, 5, 0, 2),
         ]
 
         self.challenges = challenges
 
-    def complete_challenge(self, associated_skill, xp):
+    def complete_challenge(self, associated_skill: GeneralSkill, xp):
         """
-        If a challenge is completed, the general Health Skill will always be increased,
+        TODO: If a challenge is completed, the general Health Skill will always be increased,
         additionally the associated skill from the challenge (e.g. Walking) will be
         updated too.
         """
-        health_skill = self.skills.get("Health")
+        health_skill = self.skills.get("General Health")
         health_skill.add_xp(xp)
 
-        progressed_skill = self.skills.get(associated_skill)
+        progressed_skill = self.skills.get(associated_skill.name)
         progressed_skill.add_xp(xp)
 
 
@@ -77,7 +78,6 @@ class Avatar:
             "height": self.height,
             "weight": self.weight,
             "skills": {skill: skill_data.to_json() for skill, skill_data in self.skills.items()},
-            "challenges": self.challenges,
             "inventory": {inventory: cosmetic_data.to_json() for inventory, cosmetic_data in self.inventory.items()}
         }
         return json.dumps(avatar_dict, indent=4)

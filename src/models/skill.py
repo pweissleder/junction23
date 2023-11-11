@@ -7,7 +7,7 @@ class GeneralSkill:
         self.current_level = initial_level
         self.current_xp = 0
         self.levels = {}  # Define as needed
-        self.assoc_sensor = {}
+        self.assoc_sensor = Sensor()
 
     def add_xp(self, xp):
         self.current_xp += xp
@@ -25,7 +25,7 @@ class GeneralSkill:
             "current_level": self.current_level,
             "current_xp": self.current_xp,
             "levels": self.levels,
-            "assoc_sensor": self.assoc_sensor
+            "assoc_sensor": self.assoc_sensor.to_json()
         }
         return skill_data
 
@@ -52,7 +52,7 @@ class Health(GeneralSkill):
 
 class StepSkill(GeneralSkill):
     def __init__(self):
-        super().__init__("walking")
+        super().__init__("Step")
         self.lv_xp_dic = {
             1: 100,
             2: 250,
@@ -60,4 +60,3 @@ class StepSkill(GeneralSkill):
             4: 900,
             5: 1500
         }
-        self.assoc_sensor = Sensor()
