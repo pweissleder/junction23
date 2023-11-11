@@ -1,9 +1,13 @@
+from src.models.sensor import Sensor
+
+
 class GeneralSkill:
     def __init__(self, skill_name, initial_level=1):
         self.skill_name = skill_name
         self.current_level = initial_level
         self.current_xp = 0
         self.levels = {}  # Define as needed
+        self.assoc_sensor = {}
 
     def add_xp(self, xp):
         self.current_xp += xp
@@ -27,7 +31,7 @@ class Health(GeneralSkill):
 
     def __init__(self):
         super().__init__("Health")
-        self.level = {
+        self.levels = {
             1: 100,
             2: 500,
             3: 1000,
@@ -39,10 +43,11 @@ class Health(GeneralSkill):
 class WalkingSkill(GeneralSkill):
     def __init__(self):
         super().__init__("Walking")
-        self.level = {
+        self.levels = {
             1: 100,
             2: 250,
             3: 500,
             4: 900,
             5: 1500
         }
+        self.assoc_sensor = Sensor()
