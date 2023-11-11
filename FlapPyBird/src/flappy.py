@@ -59,6 +59,8 @@ class Flappy:
 
             for event in pygame.event.get():
                 self.check_quit_event(event)
+                if self.is_tap_event_laptop(event):
+                    return
             if self.is_tap_event():
                 return
 
@@ -84,6 +86,14 @@ class Flappy:
             return True
         return False
 
+    def is_tap_event_laptop(self, event):
+        m_left, _, _ = pygame.mouse.get_pressed()
+        space_or_up = event.type == KEYDOWN and (
+            event.key == K_SPACE or event.key == K_UP
+        )
+        screen_tap = event.type == pygame.FINGERDOWN
+        return m_left or space_or_up or screen_tap
+
 
     async def play(self):
         self.score.reset()
@@ -99,6 +109,8 @@ class Flappy:
 
             for event in pygame.event.get():
                 self.check_quit_event(event)
+                if self.is_tap_event_laptop(event):
+                    self.player.flap()
             if self.is_tap_event():
                 self.player.flap()
 
