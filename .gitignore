@@ -270,3 +270,5 @@ doc/api/
 #datasets
 *.json
 *.mp4
+*.png
+*.xlsx
