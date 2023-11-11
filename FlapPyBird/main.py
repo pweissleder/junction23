@@ -1,10 +1,13 @@
 import asyncio
 import multiprocessing
+import sys
+
 import mediapipe as mp
 import cv2
+import os
 
-from FlapPyBird.src.flappy import Flappy
-
+from src.flappy import Flappy
+os.chdir(os.path.dirname(sys.argv[0]))
 
 def jump_detector(shared_counter):
     # Initialize MediaPipe Pose model.

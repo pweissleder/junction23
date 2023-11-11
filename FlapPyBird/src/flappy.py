@@ -15,6 +15,18 @@ from .entities import (
     WelcomeMessage,
 )
 from .utils import GameConfig, Images, Sounds, Window
+import os.path
+
+import firebase_admin
+from firebase_admin import credentials, firestore
+
+current_directory = os.getcwd()
+service_account_key_path = os.path.join(current_directory, 'config', 'junction23-f7df7-firebase-adminsdk-c9vm7-257e9698f3.json')
+
+cred = credentials.Certificate(os.path.join(service_account_key_path))
+
+app = firebase_admin.initialize_app(cred)
+database = firestore.client()
 
 
 class Flappy:
@@ -147,4 +159,15 @@ class Flappy:
 
             self.config.tick()
             pygame.display.update()
+
+            if self.score.score != 0:
+                print(self.score.score)
+                user_ref = database.collection("users").document("iHe7WMOWY3YEiA4qAubXJKOCx6O2")
+                doc = user_ref.get()
+                if doc.exists:
+                    current_coins = doc.to_dict().get('coins', 0)
+                    new_coins = current_coins + self.score.score
+                    user_ref.update({"coins": new_coins})
+                    print(f"Coins updated to {new_coins}")
+                self.score.reset()
             await asyncio.sleep(0)
