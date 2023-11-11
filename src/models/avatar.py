@@ -1,13 +1,15 @@
 import json
 
+from src.models.challenge import Challenge
 from src.models.cosmetic import init_cosmetics
 from src.models.inventory import Inventory
-from src.models.skill import Health, WalkingSkill
+from src.models.skill import Health
 
 
 class Avatar:
-    def __init__(self, name, age=None, height=None, weight=None, gender=None):
+    def __init__(self, userid, name, age=None, height=None, weight=None, gender=None):
 
+        self.id = userid
         self.name = name
 
         # Personal data
@@ -19,24 +21,25 @@ class Avatar:
 
         # Game information
         self.skills = self.init_skills()
-        #self.challenges = {}
+        self.challenges = []
         self.inventory = Inventory()
 
 
     @staticmethod
     def init_skills():
         health = Health()
-        walking = WalkingSkill()
+        # walking = StepSkill()
 
         return {
             # TODO: CHANGE HEALTH NAMING
-            "Health": health,
-            "Walking": walking,
+            "General Health": health,
+            # "Walking": walking,
         }
 
-    def add_challenge(self):
-        Challenge()
-        pass
+    def add_challenge(self, name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value):
+        new_chall = Challenge(name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value)
+
+        self.challenges.append(new_chall)
 
     def complete_challenge(self, associated_skill, xp):
         """
@@ -58,12 +61,13 @@ class Avatar:
 
     def to_json(self):
         avatar_dict = {
+            "user_id": self.id,
             "name": self.name,
             "age": self.age,
             "gender": self.gender,
             "height": self.height,
             "weight": self.weight,
-            "skills": self.skills,
-            "active_challenges": self.challenges
+            "skills": {skill: skill_data.to_json() for skill, skill_data in self.skills.items()},
+            "challenges": self.challenges
         }
         return json.dumps(avatar_dict, indent=4)

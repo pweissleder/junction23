@@ -19,7 +19,15 @@ class GeneralSkill:
             self.current_level += 1
             self.current_xp -= next_level_xp
 
-
+    def to_json(self):
+        skill_data = {
+            "name": self.name,
+            "current_level": self.current_level,
+            "current_xp": self.current_xp,
+            "levels": self.levels,
+            "assoc_sensor": self.assoc_sensor
+        }
+        return skill_data
 
 
 class Health(GeneralSkill):
