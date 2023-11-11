@@ -8,7 +8,7 @@ const tertiaryColor = Color.fromARGB(255, 232, 152, 84);
 const gradient1 = LinearGradient(colors: [secondaryColor, primaryColor]);
 const gradient2 = LinearGradient(colors: [tertiaryColor, secondaryColor]);
 
-const backgroundColor = Colors.white;
+const backgroundColor = Color.fromARGB(255, 236, 236, 236);
 
 const black = Color.fromARGB(255, 18, 20, 22);
 const black75 = Color.fromARGB(191, 18, 20, 22);

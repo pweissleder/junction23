@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:junction23/common_widgets/custom_solid_button.dart';
 import 'package:junction23/constants/app_spacing.dart';
 import 'package:junction23/constants/design.dart';
 import 'package:junction23/features/authentication/domain/user_model.dart';
@@ -49,25 +50,49 @@ class _AvatarScreenState extends State<AvatarScreen> {
 
     return Stack(
       children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(height: 230),
+            Text(
+              widget.userModel.name,
+              style: const TextStyle(fontSize: h5),
+            ),
+            const Text(
+              "Level: ${11}",
+              style: TextStyle(fontSize: h6),
+            ),
+            gapH24,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                customCircularProgress(0.9, "Health", primaryColor),
+                customCircularProgress(0.6, "Activity", secondaryColor),
+                customCircularProgress(0.1, "Wellbeing", tertiaryColor)
+              ],
+            ),
+            gapH40,
+            CustomSolidButton(
+              text: "Start minigame",
+              onPressed: () {},
+              gradient: gradient1,
+            )
+          ],
+        ),
         Positioned(
-            top: screenHeight * 0.4,
-            left: Spacing.p16,
+            top: 0,
+            left: 40,
             child: Image.asset(
               armPositions[armIndex],
-              scale: 5,
+              scale: 6,
             )),
         Positioned(
-            top: screenHeight * 0.4,
-            left: Spacing.p16,
+            top: 0,
+            left: 40,
             child: Image.asset(
               happy_face,
-              scale: 5,
+              scale: 6,
             )),
-        Positioned(
-            top: 200,
-            child: ElevatedButton(
-                onPressed: fetchDataFromServer,
-                child: Text("Fetch data from server"))),
       ],
     );
   }
@@ -96,24 +121,47 @@ class _AvatarScreenState extends State<AvatarScreen> {
     });
   }
 
-  Future<void> fetchDataFromServer() async {
-    final serverUrl =
-        'http://172.20.10.4:5000'; // Replace with your server's URL
-
-    try {
-      final response = await http.get(Uri.parse('$serverUrl'));
-
-      if (response.statusCode == 200) {
-        // If the server returns a 200 OK response, parse the JSON data
-        final data = jsonDecode(response.body);
-        print('Received data: $data');
-      } else {
-        // If the server returns an error response, throw an exception
-        throw Exception('Failed to load data from the server');
-      }
-    } catch (error) {
-      // Handle any network or server errors
-      print('Error: $error');
-    }
+  Widget customCircularProgress(double progress, String text, Color color) {
+    double stroke = 9;
+    double diameter = 60;
+    return Column(
+      children: [
+        Stack(
+          children: [
+            SizedBox(
+              width: diameter,
+              height: diameter,
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.transparent, // Transparent background
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                    Colors.grey), // Fill color
+                strokeWidth: stroke, // Adjust the thickness of the circle
+                value: 1, // Set the progress value (0.0 to 1.0)
+              ),
+            ),
+            SizedBox(
+              width: diameter,
+              height: diameter,
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.transparent, // Transparent background
+                valueColor: AlwaysStoppedAnimation<Color>(color), // Fill color
+                strokeWidth: stroke, // Adjust the thickness of the circle
+                value: progress, // Set the progress value (0.0 to 1.0)
+              ),
+            ),
+            Positioned(
+              top: 20,
+              left: 20,
+              child: Text((100 * progress).toInt().toString(),
+                  style: const TextStyle(
+                      fontSize: h7, fontWeight: FontWeight.bold)),
+            )
+          ],
+        ),
+        gapH8,
+        Text(text,
+            style: const TextStyle(fontSize: h7, fontWeight: FontWeight.bold))
+      ],
+    );
   }
 }

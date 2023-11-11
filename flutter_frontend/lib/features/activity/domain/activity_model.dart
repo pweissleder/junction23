@@ -1,88 +1,50 @@
-abstract class ActivityModel {
-  late String category;
+class ActivityModel {
+  String assoc_skill;
+  String name;
+  String description;
+  int xpReward;
+  int coinReward;
+  String status;
+  int sensorStartValue;
+  double progress;
+  int targetValue;
 
   // Constructor
-  ActivityModel(this.category);
+  ActivityModel(
+      {required this.assoc_skill,
+      required this.name,
+      required this.description,
+      required this.xpReward,
+      required this.coinReward,
+      required this.status,
+      required this.sensorStartValue,
+      required this.progress,
+      required this.targetValue});
 
   // Convert JSON to ActivityModel
   factory ActivityModel.fromJson(Map<String, dynamic> json) {
-    final category = json['category'] as String;
-    if (category == 'Walking') {
-      return WalkingActivityModel.fromJson(json);
-    }
-    throw ArgumentError('Unsupported ActivityModel category: $category');
+    return ActivityModel(
+        assoc_skill: json['assoc_skill'],
+        name: json['name'],
+        description: json['description'],
+        xpReward: json['xp_reward'],
+        coinReward: json['coin_reward'],
+        status: json['status'],
+        sensorStartValue: json['sensor_start_value'],
+        progress: json['progress'],
+        targetValue: json['target_value']);
   }
 
   // Convert ActivityModel to JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'category': category,
-    };
-  }
-}
-
-class WalkingActivityModel extends ActivityModel {
-  int steps;
-  // Constructor
-  WalkingActivityModel({required this.steps}) : super('Walking');
-
-  // Override fromJson
-  factory WalkingActivityModel.fromJson(Map<String, dynamic> json) {
-    if (json['category'] == 'walking') {
-      return WalkingActivityModel(steps: json['steps'] as int);
-    }
-    throw ArgumentError('Invalid JSON for WalkingActivityModel');
-  }
-}
-
-class SwimmingActivityModel extends ActivityModel {
-  double minutes;
-  // Constructor
-  SwimmingActivityModel({required this.minutes}) : super('Swimming');
-
-  // Override fromJson
-  factory SwimmingActivityModel.fromJson(Map<String, dynamic> json) {
-    if (json['category'] == 'swimming') {
-      var minutes = json["minutes"];
-      if (minutes is int) {
-        // Convert the int to a double
-        final doubleValue = minutes.toDouble();
-        minutes = doubleValue;
-      } else if (minutes is double) {
-        // If it's already a double, just return it
-        minutes = minutes;
-      } else {
-        throw Exception("Field is not a valid number");
-      }
-      return SwimmingActivityModel(minutes: minutes);
-    }
-    throw ArgumentError('Invalid JSON for SwimmingActivityModel');
-  }
-}
-
-class TeamSportsActivityModel extends ActivityModel {
-  double minutes;
-
-  // Constructor
-  TeamSportsActivityModel({required this.minutes}) : super('Team Sports');
-
-  // Override fromJson
-  factory TeamSportsActivityModel.fromJson(Map<String, dynamic> json) {
-    var minutes = json["minutes"];
-    if (minutes is int) {
-      // Convert the int to a double
-      final doubleValue = minutes.toDouble();
-      minutes = doubleValue;
-    } else if (minutes is double) {
-      // If it's already a double, just return it
-      minutes = minutes;
-    } else {
-      throw Exception("Field is not a valid number");
-    }
-
-    if (json['category'] == 'team_sports') {
-      return TeamSportsActivityModel(minutes: minutes);
-    }
-    throw ArgumentError('Invalid JSON for TeamSportsActivityModel');
-  }
+  Map<String, dynamic> toJson() => {
+        'assoc_skill': assoc_skill,
+        'name': name,
+        'description': description,
+        'xp_reward': xpReward,
+        'coin_reward': coinReward,
+        'status': status,
+        'progress': progress,
+        'sensor_start_value': sensorStartValue,
+        'target_value': targetValue
+      };
 }
