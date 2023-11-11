@@ -43,15 +43,16 @@ class Images:
         # select random pipe sprites
         rand_pipe = random.randint(0, len(PIPES) - 1)
 
+        size = 80
         self.background = pygame.image.load(BACKGROUNDS[rand_bg]).convert()
         img0 = pygame.image.load(PLAYERS[0][0]).convert_alpha()
-        img0 = pygame.transform.scale(img0, (100, 100))
+        img0 = pygame.transform.scale(img0, (size, size))
         #img0 = pygame.transform.rotate(img0, 90)
         img1 = pygame.image.load(PLAYERS[0][1]).convert_alpha()
-        img1 = pygame.transform.scale(img1, (100, 100))
+        img1 = pygame.transform.scale(img1, (size, size))
         #img1 = pygame.transform.rotate(img1, 90)
         img2 = pygame.image.load(PLAYERS[0][2]).convert_alpha()
-        img2 = pygame.transform.scale(img2, (100, 100))
+        img2 = pygame.transform.scale(img2, (size, size))
         #img2 = pygame.transform.rotate(img2, 90)
         self.player = (img0, img1, img2)
 

@@ -18,12 +18,14 @@ from .utils import GameConfig, Images, Sounds, Window
 
 
 class Flappy:
-    def __init__(self):
+    def __init__(self, shared_counter):
         pygame.init()
         pygame.display.set_caption("Flappy Bird")
         window = Window(288, 512)
         screen = pygame.display.set_mode((window.width, window.height))
         images = Images()
+        self.shared_counter = shared_counter
+        self.previous_jump_count = 0
 
         self.config = GameConfig(
             screen=screen,
@@ -36,6 +38,7 @@ class Flappy:
 
     async def start(self):
         while True:
+
             self.background = Background(self.config)
             self.floor = Floor(self.config)
             self.player = Player(self.config)
@@ -53,10 +56,11 @@ class Flappy:
         self.player.set_mode(PlayerMode.SHM)
 
         while True:
+
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event):
-                    return
+            if self.is_tap_event():
+                return
 
             self.background.tick()
             self.floor.tick()
@@ -64,7 +68,7 @@ class Flappy:
             self.welcome_message.tick()
 
             pygame.display.update()
-            await asyncio.sleep(0)
+            await asyncio.sleep(0.1)
             self.config.tick()
 
     def check_quit_event(self, event):
@@ -74,13 +78,12 @@ class Flappy:
             pygame.quit()
             sys.exit()
 
-    def is_tap_event(self, event):
-        m_left, _, _ = pygame.mouse.get_pressed()
-        space_or_up = event.type == KEYDOWN and (
-            event.key == K_SPACE or event.key == K_UP
-        )
-        screen_tap = event.type == pygame.FINGERDOWN
-        return m_left or space_or_up or screen_tap
+    def is_tap_event(self):
+        if self.previous_jump_count < self.shared_counter.value:
+            self.previous_jump_count = self.shared_counter.value
+            return True
+        return False
+
 
     async def play(self):
         self.score.reset()
@@ -96,8 +99,8 @@ class Flappy:
 
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event):
-                    self.player.flap()
+            if self.is_tap_event():
+                self.player.flap()
 
             self.background.tick()
             self.floor.tick()
@@ -106,7 +109,7 @@ class Flappy:
             self.player.tick()
 
             pygame.display.update()
-            await asyncio.sleep(0)
+            await asyncio.sleep(0.08)
             self.config.tick()
 
     async def game_over(self):
@@ -119,9 +122,9 @@ class Flappy:
         while True:
             for event in pygame.event.get():
                 self.check_quit_event(event)
-                if self.is_tap_event(event):
-                    if self.player.y + self.player.h >= self.floor.y - 1:
-                        return
+            if self.is_tap_event():
+                if self.player.y + self.player.h >= self.floor.y - 1:
+                    return
 
             self.background.tick()
             self.floor.tick()
