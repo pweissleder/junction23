@@ -4,7 +4,6 @@ from src.models.skill import GeneralSkill
 
 
 class Status(Enum):
-    INACTIVE = "inactive"
     ACTIVE = "active"
     COMPLETED = "completed"
 
