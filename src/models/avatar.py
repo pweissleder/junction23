@@ -2,7 +2,7 @@ import json
 
 from src.models.challenge import Challenge
 from src.models.cosmetic import init_cosmetics, Cosmetic
-from src.models.skill import Health
+from src.models.skill import Health, StepSkill, GeneralSkill
 
 
 class Avatar:
@@ -27,12 +27,12 @@ class Avatar:
     @staticmethod
     def init_skills():
         health = Health()
-        # walking = StepSkill()
+        steps = StepSkill()
 
         return {
             # TODO: CHANGE HEALTH NAMING
             "General Health": health,
-            # "Walking": walking,
+            "Steps": steps,
         }
 
     def init_challenges(self):
@@ -48,16 +48,16 @@ class Avatar:
 
         self.challenges = challenges
 
-    def complete_challenge(self, associated_skill, xp):
+    def complete_challenge(self, associated_skill: GeneralSkill, xp):
         """
-        If a challenge is completed, the general Health Skill will always be increased,
+        TODO: If a challenge is completed, the general Health Skill will always be increased,
         additionally the associated skill from the challenge (e.g. Walking) will be
         updated too.
         """
-        health_skill = self.skills.get("Health")
+        health_skill = self.skills.get("General Health")
         health_skill.add_xp(xp)
 
-        progressed_skill = self.skills.get(associated_skill)
+        progressed_skill = self.skills.get(associated_skill.name)
         progressed_skill.add_xp(xp)
 
 

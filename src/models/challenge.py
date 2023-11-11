@@ -10,7 +10,7 @@ class Status(Enum):
 
 
 class Challenge:
-    def __init__(self, name, description, assoc_skill, xp_reward, coin_reward, sensor_start_value, target_value):
+    def __init__(self, name, description="", assoc_skill=None, xp_reward=0, coin_reward=0, sensor_start_value=0, target_value=0):
         self.name = name
         self.description = description
         self.assoc_skill = assoc_skill
@@ -39,7 +39,7 @@ class Challenge:
         challenge_data = {
             "name": self.name,
             "description": self.description,
-            "assoc_skill": self.assoc_skill,
+            "assoc_skill": self.assoc_skill.to_json(),
             "xp_reward": self.xp_reward,
             "coin_reward": self.coin_reward,
             "status": "active",
