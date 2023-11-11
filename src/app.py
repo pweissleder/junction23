@@ -9,6 +9,8 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 from src.models.cosmetic import Cosmetic
+from src.models.sensor import Sensor
+from src.models.skill import GeneralSkill
 
 app = Flask(__name__)
 
@@ -39,10 +41,16 @@ def init_user():
     Initialize the current user and write to firebase
     """
     data = json.loads(request.data)
-    user_id = data.get('userid')
-    name = data.get('name')
+    user_id = data.get('user_id')
+    username = data.get('username')
 
-    avatar = Avatar(user_id, name)
+    name = data.get('name')
+    age = data.get('age')
+    height = data.get('height')
+    weight = data.get('weight')
+    gender = data.get('gender')
+
+    avatar = Avatar(user_id, username, name, height, age, weight, gender)
     avatar.init_challenges()
     avatar_data = json.loads(avatar.to_json())
 
@@ -69,18 +77,8 @@ def init_user():
 
     return "SUCCESS"
 
-
-
-
-@app.route('/api/chall_completed', methods=['POST'])
-def complete_chall():
-    """
-    LOAD CURRENT USER
-    """
-
-
     ## Shop
-@app.route('/api/shop/buy', methods=['GET', 'POST'])
+@app.route('/api/shop/buy', methods=['POST'])
 def shop_buy():
     if request.method == "POST":
 
@@ -126,7 +124,7 @@ def shop_buy():
         return jsonify({"message": "Ok"})
 
 
-@app.route('/api/inventory/equip', methods=['GET', 'POST'])
+@app.route('/api/inventory/equip', methods=['POST'])
 def equip_cosmetic():
     if request.method == "POST":
 
@@ -170,7 +168,7 @@ def equip_cosmetic():
         return jsonify({"message": "Ok"})
 
 
-@app.route('/api/inventory/strip', methods=['GET', 'POST'])
+@app.route('/api/inventory/strip', methods=['POST'])
 def strip_cosmetic():
     if request.method == "POST":
 
@@ -212,6 +210,57 @@ def strip_cosmetic():
 
         firebase_admin.delete_app(firebase_admin.get_app())
         return jsonify({"message": "Ok"})
+
+
+@app.route('/api/update_sensor', methods=['POST'])
+def update_sensor():
+    if request.method == "POST":
+
+        current_directory = os.getcwd()
+        service_account_key_path = os.path.join(current_directory, 'config', 'serviceAccountKey.json')
+
+        # Initialize Firebase Admin SDK with the dynamically determined path
+        cred = credentials.Certificate(service_account_key_path)
+        firebase_admin.initialize_app(cred)
+
+        print("Flutter has successfully sent POST data on the buy endpoint")
+        data = json.loads(request.data)
+        user_id = data.get('user_id')
+        skill = data.get('skill')
+        value = data.get('value')
+
+
+        # Initialize Firestore database
+        db = firestore.client()
+
+        # Create or update the user document in Firestore
+        user_ref = db.collection('users').document(user_id)
+
+        try:
+            doc = user_ref.get()
+            if doc.exists:
+                # Document data is stored in the to_dict() method
+                data = doc.to_dict()
+                skills = dict(data.get('skills'))
+
+                if new_skill := skills.get(skill):
+                    sensor = new_skill['assoc_sensor']
+                    sensor['value'] = value
+                    new_skill['assoc_sensor'] = sensor
+                    skills[skill] = new_skill
+                    data['skills'] = skills
+                    user_ref.update(data)
+                else:
+                    print(f"Sensor or {skill} does not exist.")
+            else:
+                print(f"Document {user_id} does not exist.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+        firebase_admin.delete_app(firebase_admin.get_app())
+        return jsonify({"message": "Ok"})
+
+
 
 
 if __name__ == '__main__':

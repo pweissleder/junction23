@@ -5,3 +5,6 @@ class Sensor:
 
     def update_sensor_data(self, new_val):
         self.value = new_val
+
+    def to_json(self):
+        return {"value" : self.value.__str__()}
