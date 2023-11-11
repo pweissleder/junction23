@@ -33,6 +33,7 @@ migrate_working_dir/
 flutter_frontend/build/
 .macos/
 build/app/
+/flutter_frontend/build/
 
 # Symbolication related
 app.*.symbols

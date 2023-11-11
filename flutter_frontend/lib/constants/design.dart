@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 // COLORS
-const primaryColor = Color.fromARGB(255, 64, 117, 169);
-const secondaryColor = Color.fromARGB(255, 117, 47, 153);
-const tertiaryColor = Color.fromARGB(255, 79, 32, 102);
+const primaryColor = Color.fromARGB(255, 84, 207, 232);
+const secondaryColor = Color.fromARGB(255, 84, 232, 158);
+const tertiaryColor = Color.fromARGB(255, 232, 152, 84);
 
 const gradient1 = LinearGradient(colors: [secondaryColor, primaryColor]);
 const gradient2 = LinearGradient(colors: [tertiaryColor, secondaryColor]);

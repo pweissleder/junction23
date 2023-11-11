@@ -7,6 +7,7 @@ import 'package:junction23/features/authentication/presentation/sign_up_screen.d
 import 'package:junction23/home_screen.dart';
 
 class AppRouting {
+  static String home = "/";
   static String login = 'login';
   static String signUp = 'signUp';
   static String profie = 'profile';
@@ -17,7 +18,8 @@ class AppRouting {
     initialLocation: "/",
     routes: <GoRoute>[
       GoRoute(
-          path: "/",
+          name: home,
+          path: home,
           pageBuilder: (context, state) =>
               const MaterialPage(child: HomeScreen()),
           routes: [
