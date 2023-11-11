@@ -7,7 +7,9 @@ import cv2
 import os
 
 from src.flappy import Flappy
+
 os.chdir(os.path.dirname(sys.argv[0]))
+
 
 def jump_detector(shared_counter):
     # Initialize MediaPipe Pose model.
@@ -59,7 +61,7 @@ def jump_detector(shared_counter):
 
             # Display jump status.
             if jump_detected:
-                #comment out for dont show window
+                # comment out for dont show window
                 cv2.putText(image, 'Jump Detected', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
                 jump_detected = False
 
@@ -85,7 +87,7 @@ def start_flappy_game(shared_counter):
     asyncio.run(run_flappy(shared_counter))
 
 
-if __name__ == "__main__":
+def run_game():
     # Create a shared counter
     shared_counter = multiprocessing.Value('i', 0)  # 'i' for integer type
 
@@ -100,3 +102,6 @@ if __name__ == "__main__":
     # Join processes (optional, depending on your use case)
     p1.join()
     p2.join()
+
+
+run_game()
