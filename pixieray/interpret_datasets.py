@@ -8,6 +8,7 @@ from matplotlib.animation import FuncAnimation, PillowWriter
 from IPython.display import display, HTML
 from moviepy.editor import VideoFileClip
 import cv2
+from tqdm import tqdm
 
 
 print(os.getcwd())
@@ -182,7 +183,7 @@ def visualize_eyemovement(df):
 
 
 
-def vid_eyemovement(df):
+def vid_eyemovement(df, points_per_frame, gif_name):
     # Erstelle ein 3D-Figurenobjekt
     fig = plt.figure(figsize=(10, 10))
     ax = fig.add_subplot(111, projection='3d')
@@ -205,7 +206,7 @@ def vid_eyemovement(df):
     ax.set_ylim(5, 15)
     ax.set_zlim(-8, 8)
 
-    max_points_per_frame = 50
+    max_points_per_frame = points_per_frame
 
     def update(frame):
         nonlocal scatter
@@ -226,11 +227,17 @@ def vid_eyemovement(df):
         # Füge neuen Scatter-Plot hinzu
         scatter = ax.scatter(x, y, z, c=timestamp, cmap='viridis', s=50)
 
-    # Create the animation
-    animation = FuncAnimation(fig, update, frames=len(df['afe_timestamp']), interval=1000, repeat=False)
+        # Fortschrittsbalken aktualisieren
+        pbar.update(1)
 
-    gif_datei = 'animation_5000.gif'
-    animation.save(gif_datei, writer='ffmpeg', fps=30)
+    # Erstellen Sie einen Fortschrittsbalken mit der Gesamtanzahl der Frames
+    with tqdm(total=len(df['afe_timestamp'])) as pbar:
+        # Erstellen Sie die Animation
+        animation = FuncAnimation(fig, update, frames=len(df['afe_timestamp']), interval=1000, repeat=False)
+
+        # Speichern Sie die Animation
+        gif_datei = gif_name
+        animation.save(gif_datei, writer='ffmpeg', fps=30)
 
 
 
@@ -248,7 +255,7 @@ def get_fps(video_path):
 
 csv_datei = 'driving_p1_round1.csv'
 df = pd.read_csv(csv_datei)
-df = df.head(5000)
+df = df.head(100)
 
 
 #analysis_dataframe(df)
@@ -261,4 +268,4 @@ df = df.head(5000)
 #df = df.head(30)
 #visualize_eyemovement(df)
 
-vid_eyemovement(df)
+vid_eyemovement(df, "driving_test.gif")
