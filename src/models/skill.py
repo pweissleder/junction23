@@ -3,21 +3,23 @@ from src.models.sensor import Sensor
 
 class GeneralSkill:
     def __init__(self, skill_name, initial_level=1):
-        self.skill_name = skill_name
+        self.name = skill_name
         self.current_level = initial_level
         self.current_xp = 0
-        self.levels = {}  # Define as needed
+        self.lv_xp_dic = {}  # Define as needed
         self.assoc_sensor = {}
 
     def add_xp(self, xp):
         self.current_xp += xp
-        self.check_next_level_reached()
+        self.update_level()
 
-    def check_next_level_reached(self):
-        next_level_xp = self.levels.get(self.current_level + 1)
+    def update_level(self):
+        next_level_xp = self.lv_xp_dic.get(self.current_level + 1)
         if self.current_xp >= next_level_xp:
             self.current_level += 1
             self.current_xp -= next_level_xp
+
+
 
 
 class Health(GeneralSkill):
@@ -31,7 +33,7 @@ class Health(GeneralSkill):
 
     def __init__(self):
         super().__init__("Health")
-        self.levels = {
+        self.lv_xp_dic = {
             1: 100,
             2: 500,
             3: 1000,
@@ -43,7 +45,7 @@ class Health(GeneralSkill):
 class WalkingSkill(GeneralSkill):
     def __init__(self):
         super().__init__("Walking")
-        self.levels = {
+        self.lv_xp_dic = {
             1: 100,
             2: 250,
             3: 500,
