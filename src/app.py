@@ -42,5 +42,27 @@ def complete_chall():
     """
 
 
+    ## Shop
+@app.route('/shop/buy', methods=['GET', 'POST'])
+def shop_buy():
+    """
+    ONLY FOR CONNECTION TESTING
+    """
+    if request.method == "POST":
+        print("Flutter has successfully sent POST data on the buy endpoint")
+        data = request.json
+        # get ID
+        # get Avatar
+        # get Inventory
+        # find item
+        # call buy
+
+        return jsonify({"message": "Ok"})
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5000)

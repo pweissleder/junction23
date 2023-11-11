@@ -1,6 +1,7 @@
 import json
 
 from src.models.cosmetic import init_cosmetics
+from src.models.inventory import Inventory
 from src.models.skill import Health, WalkingSkill
 
 
@@ -19,7 +20,7 @@ class Avatar:
         # Game information
         self.skills = self.init_skills()
         #self.challenges = {}
-        # self.inventory
+        self.inventory = Inventory()
 
 
     @staticmethod

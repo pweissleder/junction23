@@ -10,15 +10,23 @@ class CosmeticType(Enum):
     BACKGROUND = "Background"
 
 
-
 class Cosmetic:
-    def __init__(self, name, skill):
+    def __init__(self, name, img="URL", type=0, skill="", unlock_level=0, price=0):
         self.name = name
-        self.img = "URL"  # TODO: PUT CORRECT DATA FORMAT
-        self.type = 0
-        self.skill = ""
-        self.price = 0
+        self.img = img  # TODO: PUT CORRECT DATA FORMAT
+        self.type = type
+        self.skill = skill
+        self.unlock_level = unlock_level
+        self.price = price
+        self.suggested = False
+        self.bought = False
+
+    def buy(self):
+        self.bought = True
 
 
+
+#TODO Hardcode cosmetics
 def init_cosmetics():
-    return Cosmetic("Bobby")
+        return Cosmetic("Bobby")
+
