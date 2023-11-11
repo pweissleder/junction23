@@ -1,5 +1,6 @@
 import json
 
+from src.models.challenge import Challenge
 from src.models.skill import Health
 
 
@@ -33,10 +34,16 @@ class Avatar:
             # "Walking": walking,
         }
 
-    def add_challenge(self, name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value):
-        new_chall = Challenge(name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value)
+    def init_challenges(self):
+        """
+        PARAMETER: name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value
+        :return:
+        """
+        challenges = [
+            Challenge("Step it up!", f"Walk {str(2000)} steps today!", "walking", 10, 5, 745, 2000),
+        ]
 
-        self.challenges.append(new_chall)
+        self.challenges = challenges
 
     def complete_challenge(self, associated_skill, xp):
         """
@@ -65,6 +72,6 @@ class Avatar:
             "height": self.height,
             "weight": self.weight,
             "skills": {skill: skill_data.to_json() for skill, skill_data in self.skills.items()},
-            "challenges": self.challenges
+            "challenges": [challenge.to_json() for challenge in self.challenges]
         }
         return json.dumps(avatar_dict, indent=4)

@@ -52,7 +52,7 @@ class Health(GeneralSkill):
 
 class StepSkill(GeneralSkill):
     def __init__(self):
-        super().__init__("Walking")
+        super().__init__("walking")
         self.lv_xp_dic = {
             1: 100,
             2: 250,

@@ -36,6 +36,7 @@ def init_user():
     name = data.get('name')
 
     avatar = Avatar(user_id, name)
+    avatar.init_challenges()
     avatar_data = json.loads(avatar.to_json())
 
     import firebase_admin
