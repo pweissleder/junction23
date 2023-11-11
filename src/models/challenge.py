@@ -21,10 +21,8 @@ class Challenge:
         self.target_value = target_value
         self.progress = 0
 
-
-
-    def calc_progress(self):
-        self.progress = self.get_current_value() / (self.target_value + self.sensor_start_value)
+    def calc_progress(self, current_value):
+        self.progress = current_value/ (self.target_value + self.sensor_start_value)
 
     def check_completion(self):
         """
