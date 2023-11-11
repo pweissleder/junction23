@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:junction23/common_widgets/custom_solid_button.dart';
 import 'package:junction23/constants/app_spacing.dart';
@@ -50,10 +48,16 @@ class _AvatarScreenState extends State<AvatarScreen> {
 
     return Stack(
       children: [
+        Positioned(
+            top: 0,
+            child: Image.asset(
+              "assets/bg13.png",
+              width: screenWidth,
+            )),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 230),
+            const SizedBox(height: 280),
             Text(
               widget.userModel.name,
               style: const TextStyle(fontSize: h5),

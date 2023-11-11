@@ -20,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
     final contentIndex = ref.watch(selectedContentIndexProvider);
 
     return Scaffold(
-      appBar: customAppBar(),
+      appBar: customAppBar(contentIndex),
       body: Stack(
         children: [
           userModelAsyncValue.when(
@@ -76,9 +76,9 @@ class HomeScreen extends ConsumerWidget {
         ),
       ],
       currentIndex: contentIndex,
-      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-      selectedItemColor: const Color.fromARGB(255, 1, 56, 101),
-      unselectedItemColor: black,
+      backgroundColor: Color.fromARGB(255, 15, 15, 15),
+      selectedItemColor: Color.fromARGB(255, 93, 160, 214),
+      unselectedItemColor: Colors.white,
       selectedLabelStyle:
           const TextStyle(fontWeight: FontWeight.bold, fontSize: h7 + 2),
       onTap: (index) {
@@ -87,11 +87,35 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  AppBar customAppBar() {
+  AppBar customAppBar(int contentIndex) {
     return AppBar(
       elevation: 0,
       toolbarHeight: 100,
-      backgroundColor: Colors.transparent,
+      flexibleSpace: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromARGB(255, 124, 119, 80),
+              const Color.fromARGB(255, 224, 218, 198)
+            ],
+
+            begin: Alignment.topCenter, // Start from the top center
+            end: Alignment.bottomCenter, // End at the bottom center
+          ),
+        ),
+      ),
+      backgroundColor: contentIndex == 0
+          ? const Color.fromARGB(255, 25, 166, 253)
+          : Colors.transparent,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(2),
+        child: Container(
+          color: contentIndex == 0
+              ? const Color.fromARGB(255, 224, 218, 198)
+              : Colors.transparent,
+          height: 1.0,
+        ),
+      ),
       actions: [
         Column(children: [
           IconButton(
@@ -104,7 +128,8 @@ class HomeScreen extends ConsumerWidget {
           ),
           const Text(
             " Coins: ${112}",
-            style: TextStyle(fontSize: h7, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: h7, fontWeight: FontWeight.bold, color: black),
           )
         ]),
         const Spacer(),

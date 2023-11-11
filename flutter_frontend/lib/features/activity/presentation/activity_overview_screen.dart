@@ -23,8 +23,20 @@ class ActivityOverviewScreen extends ConsumerWidget {
           print(activities);
           // Display the retrieved activity data here
           return ListView.builder(
-              itemCount: activities.length,
+              itemCount: activities.length + 1,
               itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Center(
+                        child: Text(
+                          "Daily Challenges",
+                          style: TextStyle(color: Colors.white, fontSize: h5),
+                        ),
+                      ));
+                }
+
+                index = index - 1;
                 final activity = activities[index];
                 return Padding(
                     padding: const EdgeInsets.fromLTRB(
@@ -43,10 +55,15 @@ class ActivityOverviewScreen extends ConsumerWidget {
   }
 
   Widget challengeContainer(ActivityModel activityModel, Color color) {
+    String text = activityModel.assoc_skill == "walking"
+        ? "1.152\nSchritte"
+        : activityModel.assoc_skill == "swimming"
+            ? "12\nMinutes"
+            : "13\nKilometer";
     return Container(
-      height: 70,
+      height: 150,
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 71, 71, 101),
+        color: Color.fromARGB(255, 67, 67, 67),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -57,18 +74,16 @@ class ActivityOverviewScreen extends ConsumerWidget {
                 padding:
                     const EdgeInsets.fromLTRB(Spacing.p16, 0, Spacing.p16, 0),
                 child: Text(
-                  "Schritte: ${(activityModel.targetValue * activityModel.progress).toInt()}",
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                  "${activityModel.assoc_skill}                              Durchschnitt:${text}: ${(activityModel.targetValue * activityModel.progress).toInt()}",
+                  style: TextStyle(
+                      color: color, fontWeight: FontWeight.bold, fontSize: 16),
                 )),
             Padding(
                 padding:
                     const EdgeInsets.fromLTRB(Spacing.p16, 0, Spacing.p16, 8),
                 child: LinearProgressIndicator(
                   value: activityModel.progress,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(255, 212, 223, 224),
                   color: color,
                   minHeight: 24,
                   borderRadius: BorderRadius.circular(8),
