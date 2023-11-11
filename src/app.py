@@ -57,7 +57,9 @@ def init_user():
     # Create or update the user document in Firestore
     user_ref = db.collection('users').document(user_id)
     user_ref.set(avatar_data)
-
+    for c in avatar.challenges:
+        db.collection("users").document("iHe7WMOWY3YEiA4qAubXJKOCx6O2").collection("challenges").document(c.assoc_skill).set(c.to_json())
+    "iHe7MWOMY3YEiA4qAubXJKOCx602"
     # Close Firebase Admin SDK
     firebase_admin.delete_app(firebase_admin.get_app())
 

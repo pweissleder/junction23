@@ -6,7 +6,6 @@ from src.models.skill import Health
 
 class Avatar:
     def __init__(self, userid, name, age=None, height=None, weight=None, gender=None):
-
         self.id = userid
         self.name = name
 
@@ -41,6 +40,8 @@ class Avatar:
         """
         challenges = [
             Challenge("Step it up!", f"Walk {str(2000)} steps today!", "walking", 10, 5, 745, 2000),
+            Challenge("Swim", f"swim 10 minutes!", "swimming", 10, 5, 0, 10),
+            Challenge("Drive your bike", f"Drive 1km", "biking", 10, 5, 0, 2),
         ]
 
         self.challenges = challenges
@@ -72,6 +73,5 @@ class Avatar:
             "height": self.height,
             "weight": self.weight,
             "skills": {skill: skill_data.to_json() for skill, skill_data in self.skills.items()},
-            "challenges": [challenge.to_json() for challenge in self.challenges]
         }
         return json.dumps(avatar_dict, indent=4)
