@@ -120,14 +120,98 @@ def shop_buy():
                 print(f"Document {user_id} does not exist.")
         except Exception as e:
             print(f"An error occurred: {e}")
-        # get Avatar
-        # get Inventory
-        # find item
-        # call buy
+
+
         firebase_admin.delete_app(firebase_admin.get_app())
         return jsonify({"message": "Ok"})
 
 
+@app.route('/api/inventory/equip', methods=['GET', 'POST'])
+def equip_cosmetic():
+    if request.method == "POST":
+
+        current_directory = os.getcwd()
+        service_account_key_path = os.path.join(current_directory, 'config', 'serviceAccountKey.json')
+
+        # Initialize Firebase Admin SDK with the dynamically determined path
+        cred = credentials.Certificate(service_account_key_path)
+        firebase_admin.initialize_app(cred)
+
+        print("Flutter has successfully sent POST data on the buy endpoint")
+        data = json.loads(request.data)
+        user_id = data.get('user_id')
+        cosmetic_id = data.get('cosmetic_id')
+        # Initialize Firestore database
+        db = firestore.client()
+
+        # Create or update the user document in Firestore
+        user_ref = db.collection('users').document(user_id)
+
+        try:
+            doc = user_ref.get()
+            if doc.exists:
+                # Document data is stored in the to_dict() method
+                data = doc.to_dict()
+                inventory = dict(data.get('inventory'))
+
+                if cosmetic := inventory.get(cosmetic_id):
+                    cosmetic['equipped'] = True
+                    inventory[cosmetic_id] = cosmetic
+                    data['inventory'] = inventory
+                    user_ref.update(data)
+                else:
+                    print(f"Cosmetic {cosmetic_id} does not exist.")
+            else:
+                print(f"Document {user_id} does not exist.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+        firebase_admin.delete_app(firebase_admin.get_app())
+        return jsonify({"message": "Ok"})
+
+
+@app.route('/api/inventory/strip', methods=['GET', 'POST'])
+def strip_cosmetic():
+    if request.method == "POST":
+
+        current_directory = os.getcwd()
+        service_account_key_path = os.path.join(current_directory, 'config', 'serviceAccountKey.json')
+
+        # Initialize Firebase Admin SDK with the dynamically determined path
+        cred = credentials.Certificate(service_account_key_path)
+        firebase_admin.initialize_app(cred)
+
+        print("Flutter has successfully sent POST data on the buy endpoint")
+        data = json.loads(request.data)
+        user_id = data.get('user_id')
+        cosmetic_id = data.get('cosmetic_id')
+        # Initialize Firestore database
+        db = firestore.client()
+
+        # Create or update the user document in Firestore
+        user_ref = db.collection('users').document(user_id)
+
+        try:
+            doc = user_ref.get()
+            if doc.exists:
+                # Document data is stored in the to_dict() method
+                data = doc.to_dict()
+                inventory = dict(data.get('inventory'))
+
+                if cosmetic := inventory.get(cosmetic_id):
+                    cosmetic['equipped'] = False
+                    inventory[cosmetic_id] = cosmetic
+                    data['inventory'] = inventory
+                    user_ref.update(data)
+                else:
+                    print(f"Cosmetic {cosmetic_id} does not exist.")
+            else:
+                print(f"Document {user_id} does not exist.")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+        firebase_admin.delete_app(firebase_admin.get_app())
+        return jsonify({"message": "Ok"})
 
 
 if __name__ == '__main__':

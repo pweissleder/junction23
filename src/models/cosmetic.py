@@ -25,6 +25,7 @@ class Cosmetic:
         self.price = price
         self.suggested = False
         self.bought = False
+        self.equipped = False
 
     def buy(self):
         self.bought = True
@@ -39,7 +40,8 @@ class Cosmetic:
             "unlock_levels": self.unlock_level,
             "price": self.price,
             "suggested": self.suggested,
-            "bought": self.bought
+            "bought": self.bought,
+            "equipped": self.equipped
         }
         return cosmetic_data
 

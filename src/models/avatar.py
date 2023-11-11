@@ -60,11 +60,6 @@ class Avatar:
         progressed_skill = self.skills.get(associated_skill)
         progressed_skill.add_xp(xp)
 
-    def get_outfit(self):
-        """
-        Will get the equipped cosmetics and provide the URLS from firebase to the frontend
-        """
-        pass
 
     def init_cosmetic(self):
         inventory = {}
