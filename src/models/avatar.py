@@ -18,9 +18,9 @@ class Avatar:
 
         # Game information
         self.skills = self.init_skills()
-        # self.challenges = {}
+        #self.challenges = {}
         # self.inventory
-        # self.cosmetics
+
 
     @staticmethod
     def init_skills():

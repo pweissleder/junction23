@@ -6,7 +6,7 @@ class GeneralSkill:
         self.name = skill_name
         self.current_level = initial_level
         self.current_xp = 0
-        self.lv_xp_dic = {}  # Define as needed
+        self.levels = {}  # Define as needed
         self.assoc_sensor = {}
 
     def add_xp(self, xp):
@@ -14,7 +14,7 @@ class GeneralSkill:
         self.update_level()
 
     def update_level(self):
-        next_level_xp = self.lv_xp_dic.get(self.current_level + 1)
+        next_level_xp = self.levels.get(self.current_level + 1)
         if self.current_xp >= next_level_xp:
             self.current_level += 1
             self.current_xp -= next_level_xp
@@ -33,7 +33,7 @@ class Health(GeneralSkill):
 
     def __init__(self):
         super().__init__("Health")
-        self.lv_xp_dic = {
+        self.levels = {
             1: 100,
             2: 500,
             3: 1000,
@@ -42,7 +42,7 @@ class Health(GeneralSkill):
         }
 
 
-class WalkingSkill(GeneralSkill):
+class StepSkill(GeneralSkill):
     def __init__(self):
         super().__init__("Walking")
         self.lv_xp_dic = {
