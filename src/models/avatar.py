@@ -7,7 +7,6 @@ from src.models.skill import Health
 
 class Avatar:
     def __init__(self, userid, name, age=None, height=None, weight=None, gender=None):
-
         self.id = userid
         self.name = name
 
@@ -36,10 +35,18 @@ class Avatar:
             # "Walking": walking,
         }
 
-    def add_challenge(self, name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value):
-        new_chall = Challenge(name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value)
+    def init_challenges(self):
+        """
+        PARAMETER: name, assoc_skill, description, xp_reward, coin_reward, sensor_start_value, target_value
+        :return:
+        """
+        challenges = [
+            Challenge("Step it up!", f"Walk {str(2000)} steps today!", "walking", 10, 5, 745, 2000),
+            Challenge("Swim", f"swim 10 minutes!", "swimming", 10, 5, 0, 10),
+            Challenge("Drive your bike", f"Drive 1km", "biking", 10, 5, 0, 2),
+        ]
 
-        self.challenges.append(new_chall)
+        self.challenges = challenges
 
     def complete_challenge(self, associated_skill, xp):
         """

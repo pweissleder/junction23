@@ -2,10 +2,6 @@ import json
 
 from flask import Flask, jsonify, request
 from src.models.avatar import Avatar
-import firebase_admin
-import os
-from firebase_admin import credentials
-from firebase_admin import firestore
 
 app = Flask(__name__)
 
@@ -39,13 +35,16 @@ def init_user():
     user_id = data.get('userid')
     name = data.get('name')
 
-    avatar = Avatar(user_id, name,)
+    avatar = Avatar(user_id, name)
+    avatar.init_challenges()
     avatar_data = json.loads(avatar.to_json())
 
-
+    import firebase_admin
+    import os
+    from firebase_admin import credentials
+    from firebase_admin import firestore
 
     current_directory = os.getcwd()
-    print(current_directory)
     service_account_key_path = os.path.join(current_directory, 'config', 'serviceAccountKey.json')
 
     # Initialize Firebase Admin SDK with the dynamically determined path
@@ -58,7 +57,9 @@ def init_user():
     # Create or update the user document in Firestore
     user_ref = db.collection('users').document(user_id)
     user_ref.set(avatar_data)
-
+    for c in avatar.challenges:
+        db.collection("users").document("iHe7WMOWY3YEiA4qAubXJKOCx6O2").collection("challenges").document(c.assoc_skill).set(c.to_json())
+    "iHe7MWOMY3YEiA4qAubXJKOCx602"
     # Close Firebase Admin SDK
     firebase_admin.delete_app(firebase_admin.get_app())
 

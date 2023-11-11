@@ -4,12 +4,13 @@ from src.models.skill import GeneralSkill
 
 
 class Status(Enum):
+    INACTIVE = "inactive"
     ACTIVE = "active"
     COMPLETED = "completed"
 
 
 class Challenge:
-    def __init__(self, name, assoc_skill: GeneralSkill, description, xp_reward, coin_reward, sensor_start_value, target_value):
+    def __init__(self, name, description, assoc_skill, xp_reward, coin_reward, sensor_start_value, target_value):
         self.name = name
         self.description = description
         self.assoc_skill = assoc_skill
@@ -34,13 +35,18 @@ class Challenge:
         if self.progress == 1:
             self.status = Status.COMPLETED
 
-
     def to_json(self):
-        """
-        NEEDS TO BE OVERWRITTEN IN CHILD CLASSES
-        """
-        pass
-
+        challenge_data = {
+            "name": self.name,
+            "description": self.description,
+            "assoc_skill": self.assoc_skill,
+            "xp_reward": self.xp_reward,
+            "coin_reward": self.coin_reward,
+            "status": "active",
+            "sensor_start_value" : self.sensor_start_value,
+            "target_value": self.target_value
+        }
+        return challenge_data
 """
 class StepChallenge(Challenge):
     def __init__(self, name, assoc_skill, target_steps, xp_reward):
