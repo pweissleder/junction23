@@ -2,7 +2,7 @@ import json
 
 from src.models.challenge import Challenge
 from src.models.cosmetic import init_cosmetics
-from src.models.skill import Health, WalkingSkill
+from src.models.skill import Health, StepSkill
 
 
 class Avatar:
