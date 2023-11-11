@@ -1,5 +1,6 @@
-from flask import Flask, jsonify, request
+import json
 
+from flask import Flask, jsonify, request
 from src.models.avatar import Avatar
 
 app = Flask(__name__)
@@ -30,11 +31,12 @@ def init_user():
     """
     Initialize the current user and write to firebase
     """
-    user_id = request.form.get('userid')
-    name = request.form.get('name')
+    data = json.loads(request.data)
+    user_id = data.get('userid')
+    name = data.get('name')
 
     avatar = Avatar(user_id, name)
-    avatar_data = avatar.to_json()
+    avatar_data = json.loads(avatar.to_json())
 
     import firebase_admin
     import os
@@ -58,7 +60,7 @@ def init_user():
     # Close Firebase Admin SDK
     firebase_admin.delete_app(firebase_admin.get_app())
 
-    return 200
+    return "SUCCESS"
 
 
 
