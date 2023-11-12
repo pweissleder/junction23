@@ -1,151 +1,149 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
+import 'package:iconify_flutter/icons/game_icons.dart';
 import 'package:junction23/constants/design.dart';
 import 'package:junction23/features/activity/presentation/activity_overview_screen.dart';
-import 'package:junction23/features/authentication/domain/user_model.dart';
-import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:iconify_flutter/icons/mdi.dart';
-// ignore: depend_on_referenced_packages
-import 'package:colorful_iconify_flutter/icons/twemoji.dart';
 import 'package:junction23/features/authentication/presentation/profile/profile_screen.dart';
-import 'package:junction23/features/character/presentation/avatar_screen.dart';
-import 'package:junction23/features/sensors/data/get_sensor_data.dart';
+import 'package:junction23/features/authentication/providers/user_provider.dart';
+import 'package:junction23/features/avatar/presentation/avatar_screen.dart';
+import 'package:junction23/features/routing/app_router.dart';
+import 'package:colorful_iconify_flutter/icons/twemoji.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends ConsumerStatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  late Future<UserModel?> _getCurrentUser = getCurrentUser();
-
-  int contentIndex = 0;
-  StepSimulator simulator = StepSimulator();
-  late DocumentReference docRef;
-  @override
-  void initState() {
-    super.initState();
-    _getCurrentUser = getCurrentUser();
-    //simulator.stepStream.listen((stepData) {});
-  }
-
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final userModelAsyncValue = ref.watch(currentUserProvider);
+    final contentIndex = ref.watch(selectedContentIndexProvider);
+
     return Scaffold(
-      body: Stack(children: [
-        FutureBuilder(
-            future: _getCurrentUser,
-            builder: ((context, snapshot) {
-              // if snapshot has data convert snapshot to UserModel and show full app
-              if (snapshot.hasData) {
-                // if snapshot has user show home screen
-                UserModel userModel = snapshot.data as UserModel;
-                docRef = FirebaseFirestore.instance
-                    .collection("users")
-                    .doc(userModel.id);
-                docRef.snapshots().listen(
-                  (event) {
-                    final source =
-                        (event.metadata.hasPendingWrites) ? "Local" : "Server";
-                    if (source == "Server") {
-                      userModel = UserModel.fromJson(
-                          event.data()! as Map<String, dynamic>);
-                    }
-                  },
-                  onError: (error) => print("Listen failed: $error"),
-                );
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 100,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 124, 119, 80),
+                const Color.fromARGB(255, 224, 218, 198)
+              ],
 
-                switch (contentIndex) {
-                  case 0:
-                    return AvatarScreen(userModel: userModel);
-                  case 1:
-                    return ActivityOverviewScreen(userModel: userModel);
-                  case 2:
-                    return ProfileScreen(userModel: userModel);
-                }
+              begin: Alignment.topCenter, // Start from the top center
+              end: Alignment.bottomCenter, // End at the bottom center
+            ),
+          ),
+        ),
+        backgroundColor: contentIndex == 0
+            ? const Color.fromARGB(255, 25, 166, 253)
+            : Colors.transparent,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(2),
+          child: Container(
+            color: contentIndex == 0
+                ? const Color.fromARGB(255, 224, 218, 198)
+                : Colors.transparent,
+            height: 1.0,
+          ),
+        ),
+        actions: [
+          Column(children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Iconify(
+                GameIcons.backpack,
+                size: 40,
+              ),
+              color: Colors.black,
+            ),
+            Text(
+              " Coins: ${userModelAsyncValue.value?.coins ?? 0}",
+              style: const TextStyle(
+                  fontSize: h7, fontWeight: FontWeight.bold, color: black),
+            )
+          ]),
+          const Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: const Iconify(
+              Twemoji.flexed_biceps,
+              color: black,
+              size: 40,
+            ),
+            color: Colors.black,
+          ),
+        ],
+      ),
+      body: Stack(
+        children: [
+          userModelAsyncValue.when(
+            data: (userModel) {
+              if (userModel == null) {
+                // Navigate to login screen when userModel is null
+                Future.microtask(() {
+                  context.pushNamed(AppRouting.login);
+                });
+
+                return const SizedBox(); // Return an empty widget while navigating
               }
-
-              // if snapshot is loading show progress indicator
-              return const Center(child: CircularProgressIndicator());
-            }))
-      ]),
-      bottomNavigationBar: bottomNavigationBar(),
+              switch (contentIndex) {
+                case 0:
+                  return AvatarScreen(userModel: userModel);
+                case 1:
+                  return ActivityOverviewScreen(
+                    userModel: userModel,
+                  );
+                case 2:
+                  return ProfileScreen(userModel: userModel);
+                default:
+                  return const SizedBox(); // Handle other cases as needed
+              }
+            },
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, stackTrace) {
+              // Handle error
+              return Center(child: Text("Error: $error"));
+            },
+          ),
+        ],
+      ),
+      bottomNavigationBar: bottomNavigationBar(context, contentIndex, ref),
     );
   }
 
-  BottomNavigationBar bottomNavigationBar() {
+  BottomNavigationBar bottomNavigationBar(
+      BuildContext context, int contentIndex, WidgetRef ref) {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(
-          icon: Iconify(
-            Mdi.cat,
-            size: 35,
-          ),
+          icon: Icon(Icons.av_timer),
           label: 'Avatar',
         ),
         BottomNavigationBarItem(
-          icon: Iconify(
-            Twemoji.flexed_biceps,
-            color: black,
-            size: 30,
-          ),
-          label: 'Activity',
+          icon: Icon(Icons.accessibility),
+          label: 'Challenges',
         ),
         BottomNavigationBarItem(
-          icon: Icon(
-            Icons.person,
-            color: black,
-            size: 35,
-          ),
+          icon: Icon(Icons.person),
           label: 'Profile',
         ),
       ],
       currentIndex: contentIndex,
-      selectedItemColor: Colors.amber[800],
+      backgroundColor: Color.fromARGB(255, 15, 15, 15),
+      selectedItemColor: Color.fromARGB(255, 93, 160, 214),
+      unselectedItemColor: Colors.white,
       selectedLabelStyle:
           const TextStyle(fontWeight: FontWeight.bold, fontSize: h7 + 2),
-      unselectedFontSize: h7 + 2,
       onTap: (index) {
-        setState(() {
-          switch (index) {
-            case 0:
-              contentIndex = 0;
-              break;
-            case 1:
-              contentIndex = 1;
-              break;
-            case 2:
-              contentIndex = 2;
-              break;
-          }
-        });
+        ref.read(selectedContentIndexProvider.notifier).state = index;
       },
     );
-  }
-
-  Future<UserModel?> getCurrentUser() async {
-    User? user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      print("called");
-      // get User Model from firebase
-      UserModel userModel = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get()
-          .then((value) {
-        return UserModel.fromJson(value.data()!);
-      });
-      return userModel;
-    }
-    Future.delayed(Duration.zero, () {
-      context.push("/login");
-    });
-
-    return null;
   }
 }

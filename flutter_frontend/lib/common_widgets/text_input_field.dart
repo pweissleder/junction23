@@ -20,11 +20,11 @@ class _TextInputFieldState extends State<TextInputField> {
     return Stack(
       children: [
         TextFormField(
-          style: const TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.white),
           controller: widget.controller,
           decoration: InputDecoration(
             labelText: widget.labelText,
-            labelStyle: const TextStyle(color: Colors.black),
+            labelStyle: const TextStyle(color: Colors.white),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
             ),

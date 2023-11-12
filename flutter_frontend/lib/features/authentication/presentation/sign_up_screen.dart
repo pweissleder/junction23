@@ -20,8 +20,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // Dropdown menu items for gender selection
+  String _selectedGender = 'Prefer not to say';
+  List<String> _genderOptions = [
+    'Male',
+    'Female',
+    'Other',
+    'Prefer not to say'
+  ];
 
   String state = "";
   @override
@@ -31,8 +42,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           title: const Center(child: Text('Sign Up')),
           leading: const SizedBox(),
         ),
-        body: Stack(children: [
-          Center(
+        body: SingleChildScrollView(
+          child: Center(
             child: Form(
                 key: _formKey,
                 child: Column(
@@ -46,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelText: "Username",
                           validator: "username"),
                     ),
-                    gapH24,
+                    gapH8,
                     Padding(
                       padding: const EdgeInsets.only(
                           left: Spacing.p32, right: Spacing.p32),
@@ -55,7 +66,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelText: "E-Mail",
                           validator: "email"),
                     ),
-                    gapH24,
+
+                    gapH8,
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Spacing.p32),
+                      child: TextInputField(
+                        controller: _ageController,
+                        labelText: "Age",
+                        validator: "",
+                      ),
+                    ),
+                    gapH8,
+
+                    // Add Height Input Field
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Spacing.p32),
+                      child: TextInputField(
+                        controller: _heightController,
+                        labelText: "Height (cm)",
+                        validator: "",
+                      ),
+                    ),
+                    gapH8,
+
+                    // Add Weight Input Field
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: Spacing.p32),
+                      child: TextInputField(
+                        controller: _weightController,
+                        labelText: "Weight (kg)",
+                        validator: "",
+                      ),
+                    ),
+                    gapH8,
+
+                    // Gender Dropdown
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: Spacing.p32),
+                      child: DropdownButtonFormField(
+                        value: _selectedGender,
+                        items: _genderOptions
+                            .map((gender) => DropdownMenuItem(
+                                  value: gender,
+                                  child: Text(gender),
+                                ))
+                            .toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedGender = newValue!;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Gender',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    gapH8,
                     Padding(
                       padding: const EdgeInsets.only(
                           left: Spacing.p32, right: Spacing.p32),
@@ -64,7 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelText: "Password",
                           validator: "password"),
                     ),
-                    gapH24,
+                    gapH8,
                     Padding(
                       padding: const EdgeInsets.only(
                           left: Spacing.p32, right: Spacing.p32),
@@ -73,10 +141,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           labelText: "Confirm Password",
                           validator: "password"),
                     ),
-                    gapH24,
+                    gapH16,
                     if (state.isNotEmpty)
                       Text(state, style: const TextStyle(color: error)),
-                    if (state.isNotEmpty) gapH24,
+                    if (state.isNotEmpty) gapH8,
                     CustomSolidButton(
                       text: "Sign Up",
                       gradient: gradient1,
@@ -88,7 +156,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             await signUpUser(
                                 _emailController.text,
                                 _passwordController.text,
-                                _usernameController.text);
+                                _usernameController.text,
+                                _ageController.text,
+                                _heightController.text,
+                                _weightController.text,
+                                _selectedGender);
                           } catch (e) {
                             setState(() {
                               state = e.toString();
@@ -102,6 +174,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ],
                 )),
           ),
-        ]));
+        ));
   }
 }

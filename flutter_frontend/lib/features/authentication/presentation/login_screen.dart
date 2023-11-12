@@ -64,7 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   email: _emailController.text,
                                   password: _passwordController.text)
                               .then((value) {
-                            Navigator.pushNamed(context, '/home');
+                            context.pushNamed(AppRouting.home);
                           });
                           // if login is successful navigate to home screen
                           // if login is unsuccessful show error message

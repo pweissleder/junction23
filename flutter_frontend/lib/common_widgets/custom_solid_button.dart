@@ -27,7 +27,7 @@ class CustomSolidButton extends StatefulWidget {
       this.rightMargin = 0,
       this.botMargin = 0,
       this.topMargin = 0,
-      this.fontSize = h7,
+      this.fontSize = h7 + 2,
       this.icon,
       this.isLoading = false})
       : super(key: key);
@@ -66,6 +66,7 @@ class _CustomSolidButtonState extends State<CustomSolidButton> {
                       });
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0,
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
@@ -77,10 +78,10 @@ class _CustomSolidButtonState extends State<CustomSolidButton> {
                         child: Row(mainAxisSize: MainAxisSize.min, children: [
                           Text(widget.text,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color: black,
                                   fontSize: widget.fontSize,
                                   fontFamily: "NotoSans",
-                                  fontWeight: FontWeight.normal)),
+                                  fontWeight: FontWeight.bold)),
                           hovered ? gapW16 : gapW8,
                           if (widget.icon != null)
                             Icon(
