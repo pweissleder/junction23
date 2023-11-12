@@ -211,6 +211,17 @@ def strip_cosmetic():
         firebase_admin.delete_app(firebase_admin.get_app())
         return jsonify({"message": "Ok"})
 
+def calc_progress(self, current_value):
+    self.progress = current_value / (self.target_value + self.sensor_start_value)
+
+def check_completion(self):
+    """
+    Needs Updateloop. Uses updated sensor data which itself is updated by pushed
+    from the sensordata of the device
+    """
+    if self.progress == 1:
+        self.status = "completed"
+
 
 @app.route('/api/update_sensor', methods=['POST'])
 def update_sensor():
@@ -236,29 +247,47 @@ def update_sensor():
         # Create or update the user document in Firestore
         user_ref = db.collection('users').document(user_id)
 
-        try:
-            doc = user_ref.get()
-            if doc.exists:
-                # Document data is stored in the to_dict() method
-                data = doc.to_dict()
-                skills = dict(data.get('skills'))
+        doc = user_ref.get()
+        if doc.exists:
+            #Get and create objectes
+            data = doc.to_dict()
+            skills = dict(data.get('skills'))
+            new_skill = GeneralSkill.skill_from_json(skills[skill])
+            general_skill = GeneralSkill.skill_from_json(skills['General Health'])
 
-                if new_skill := skills.get(skill):
-                    sensor = new_skill['assoc_sensor']
-                    sensor['value'] = value
-                    new_skill['assoc_sensor'] = sensor
-                    skills[skill] = new_skill
-                    data['skills'] = skills
-                    user_ref.update(data)
-                else:
-                    print(f"Sensor or {skill} does not exist.")
-            else:
-                print(f"Document {user_id} does not exist.")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+            # update value
+            new_skill.assoc_sensor.value = value
 
-        firebase_admin.delete_app(firebase_admin.get_app())
-        return jsonify({"message": "Ok"})
+            #calc progress
+            db_challenge = user_ref.collection("challenges").document(skill).get().to_dict()
+            db_challenge['progress'] = float(value) / (float(db_challenge['target_value']) + float(db_challenge['sensor_start_value']))
+
+            #Evaluate progress
+            if int(db_challenge['progress']) >= 1:
+                db_challenge['status'] = "completed"
+                new_skill.add_xp(int(db_challenge['xp_reward']))
+                general_skill.add_xp(int(db_challenge['xp_reward']))
+
+
+            #Update Skills
+
+
+            #object to dic
+            new_skill_dic = new_skill.to_json()
+            general_skill_dic = general_skill.to_json()
+
+            # dic in skills
+            skills[skill] = new_skill_dic
+            skills['General Health'] = general_skill_dic
+
+
+            data['skills'] = skills
+            user_ref.update(data)
+        else:
+            print(f"Document {user_id} does not exist.")
+
+    firebase_admin.delete_app(firebase_admin.get_app())
+    return jsonify({"message": "Ok"})
 
 
 

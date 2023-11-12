@@ -7,4 +7,7 @@ class Sensor:
         self.value = new_val
 
     def to_json(self):
-        return {"value" : self.value.__str__()}
+        return {"value": self.value.__str__()}
+
+    def from_json(self):
+        return Sensor(self["value"])

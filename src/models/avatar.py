@@ -42,24 +42,12 @@ class Avatar:
         """
 
         challenges = [
-            Challenge("Step it up!", f"Walk {str(2000)} steps today!","Step", 10, 5, 745, 2000),
+            Challenge("Step it up!", f"Walk {str(2000)} steps today!","Steps", 10, 5, 745, 2000),
             Challenge("Swim", f"swim 10 minutes!", 10, 5, 0, 10),
             Challenge("Drive your bike", f"Drive 1km", 10, 5, 0, 2),
         ]
 
         self.challenges = challenges
-
-    def complete_challenge(self, associated_skill: GeneralSkill, xp):
-        """
-        TODO: If a challenge is completed, the general Health Skill will always be increased,
-        additionally the associated skill from the challenge (e.g. Walking) will be
-        updated too.
-        """
-        health_skill = self.skills.get("General Health")
-        health_skill.add_xp(xp)
-
-        progressed_skill = self.skills.get(associated_skill.name)
-        progressed_skill.add_xp(xp)
 
 
     def init_cosmetic(self):

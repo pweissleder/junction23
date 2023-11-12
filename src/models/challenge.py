@@ -16,13 +16,13 @@ class Challenge:
         self.assoc_skill = assoc_skill
         self.xp_reward = xp_reward
         self.coin_reward = coin_reward
-        self.status = Status.ACTIVE
+        self.status = "active"
         self.sensor_start_value = sensor_start_value
         self.target_value = target_value
         self.progress = 0
 
     def calc_progress(self, current_value):
-        self.progress = current_value/ (self.target_value + self.sensor_start_value)
+        self.progress = current_value / (self.target_value + self.sensor_start_value)
 
     def check_completion(self):
         """
@@ -41,7 +41,8 @@ class Challenge:
             "coin_reward": self.coin_reward,
             "status": "active",
             "sensor_start_value": self.sensor_start_value,
-            "target_value": self.target_value
+            "target_value": self.target_value,
+            "progress": self.progress
         }
         return challenge_data
 """
