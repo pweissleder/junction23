@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+
+// COLORS
+const primaryColor = Color.fromARGB(255, 84, 207, 232);
+const secondaryColor = Color.fromARGB(255, 84, 232, 158);
+const tertiaryColor = Color.fromARGB(255, 232, 152, 84);
+
+const gradient1 = LinearGradient(colors: [secondaryColor, primaryColor]);
+const gradient2 = LinearGradient(colors: [tertiaryColor, secondaryColor]);
+
+const backgroundColor = Color.fromARGB(255, 236, 236, 236);
+
+const black = Color.fromARGB(255, 18, 20, 22);
+const black75 = Color.fromARGB(191, 18, 20, 22);
+const black50 = Color.fromARGB(127, 18, 20, 22);
+const black25 = Color.fromARGB(63, 18, 20, 22);
+const black10 = Color.fromARGB(25, 18, 20, 22);
+const black5 = Color.fromARGB(13, 18, 20, 22);
+
+const error = Color.fromARGB(255, 166, 16, 16);
+
+const colorGrading = [
+  Color.fromRGBO(61, 112, 188, 1),
+  Color.fromRGBO(61, 74, 188, 1),
+  Color.fromRGBO(60, 41, 175, 1),
+  Color.fromRGBO(45, 24, 173, 1),
+  Color.fromRGBO(82, 13, 151, 1),
+  Color.fromRGBO(84, 29, 173, 1),
+  Color.fromRGBO(130, 39, 185, 1),
+  Color.fromRGBO(167, 48, 187, 1),
+  Color.fromRGBO(130, 39, 185, 1),
+  Color.fromRGBO(84, 29, 173, 1),
+  Color.fromRGBO(82, 13, 151, 1),
+  Color.fromRGBO(45, 24, 173, 1),
+  Color.fromRGBO(60, 41, 175, 1),
+  Color.fromRGBO(61, 74, 188, 1)
+];
+
+// Typography
+const font = "NotoSans";
+
+const h1 = 119.0;
+const h2 = 84.0;
+const h3 = 60.0;
+const h4 = 42.0;
+const h5 = 30.0;
+const h6 = 21.0;
+const h7 = 15.0;
+const h8 = 11.0;
+
+const paragraph = 21.0;
+
+// IMAGES
+const happy_face = "assets/avatar/Face_Happy.png";
+const sad_face = "assets/avatar/Face_Sad.png";
+const neutral_face = "assets/avatar/Face_Normal.png";
+
+const body_large_arms_normal = "assets/avatar/Body_Large_Arms-Normal.png";
+const body_large_arms_down = "assets/avatar/Body_Large_Arms-Down.png";
+const body_large_arms_up = "assets/avatar/Body_Large_Arms-Up.png";
+
+const body_large_shadow = "assets/avatar/Body_Large_Shadow.png";
