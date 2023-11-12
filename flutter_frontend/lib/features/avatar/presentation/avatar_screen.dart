@@ -1,9 +1,15 @@
 import 'dart:async';
+import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:junction23/common_widgets/custom_solid_button.dart';
 import 'package:junction23/constants/app_spacing.dart';
 import 'package:junction23/constants/design.dart';
 import 'package:junction23/features/authentication/domain/user_model.dart';
+import 'package:junction23/features/authentication/providers/user_provider.dart';
+import 'package:colorful_iconify_flutter/icons/noto.dart';
 
 class AvatarScreen extends StatefulWidget {
   final UserModel userModel;
@@ -27,16 +33,46 @@ class _AvatarScreenState extends State<AvatarScreen> {
   int armIndex = 0;
   bool increasing = true;
   late Timer _timer;
+  late StreamSubscription<DocumentSnapshot> userSubscription;
+
+  int score = 0;
   @override
   void initState() {
     super.initState();
     _startArmAnimation();
+    _startFirestoreListener();
+  }
+
+  void _startFirestoreListener() {
+    userSubscription = FirebaseFirestore.instance
+        .collection('users')
+        .doc(widget.userModel.id)
+        .snapshots()
+        .listen((snapshot) {
+      if (snapshot.exists) {
+        // Handle the updated data
+        _handleUserDataUpdate(snapshot.data());
+      }
+    });
+  }
+
+  void _handleUserDataUpdate(Map<String, dynamic>? userData) {
+    // Update your state based on the userData
+    if (userData != null && userData.containsKey('coins')) {
+      if (widget.userModel.coins < userData['coins']) {
+        setState(() {
+          score = userData['coins'] - widget.userModel.coins;
+          widget.userModel.coins = userData['coins'];
+        });
+        _showCoinsPopup();
+      }
+    }
   }
 
   @override
   void dispose() {
-    // Cancel the timer when the widget is disposed
     _timer.cancel();
+    userSubscription.cancel(); // Cancel the Firestore subscription
     super.dispose();
   }
 
@@ -78,7 +114,9 @@ class _AvatarScreenState extends State<AvatarScreen> {
             gapH40,
             CustomSolidButton(
               text: "Start minigame",
-              onPressed: () {},
+              onPressed: () {
+                runPythonScript();
+              },
               gradient: gradient1,
             )
           ],
@@ -167,5 +205,51 @@ class _AvatarScreenState extends State<AvatarScreen> {
             style: const TextStyle(fontSize: h7, fontWeight: FontWeight.bold))
       ],
     );
+  }
+
+  void _showCoinsPopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(score <= 1
+              ? 'HEY YOU WON $score COIN!'
+              : 'HEY YOU WON $score COINS!'),
+          content: SizedBox(
+              height: 180,
+              child: Column(children: [
+                const Iconify(
+                  Noto.trophy,
+                  size: 80,
+                ),
+                gapH16,
+                CustomSolidButton(
+                  text: "Go to shop",
+                  onPressed: () {},
+                  gradient: gradient1,
+                )
+              ])),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> runPythonScript() async {
+    try {
+      var url = Uri.parse('http://10.0.13.142:5000/run-script');
+      var response = await http.get(url);
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+    } catch (e) {
+      print('Failed to connect to the server: $e');
+    }
   }
 }

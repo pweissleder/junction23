@@ -11,16 +11,76 @@ import 'package:junction23/features/avatar/presentation/avatar_screen.dart';
 import 'package:junction23/features/routing/app_router.dart';
 import 'package:colorful_iconify_flutter/icons/twemoji.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
     final userModelAsyncValue = ref.watch(currentUserProvider);
     final contentIndex = ref.watch(selectedContentIndexProvider);
 
     return Scaffold(
-      appBar: customAppBar(contentIndex),
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 100,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 124, 119, 80),
+                const Color.fromARGB(255, 224, 218, 198)
+              ],
+
+              begin: Alignment.topCenter, // Start from the top center
+              end: Alignment.bottomCenter, // End at the bottom center
+            ),
+          ),
+        ),
+        backgroundColor: contentIndex == 0
+            ? const Color.fromARGB(255, 25, 166, 253)
+            : Colors.transparent,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(2),
+          child: Container(
+            color: contentIndex == 0
+                ? const Color.fromARGB(255, 224, 218, 198)
+                : Colors.transparent,
+            height: 1.0,
+          ),
+        ),
+        actions: [
+          Column(children: [
+            IconButton(
+              onPressed: () {},
+              icon: const Iconify(
+                GameIcons.backpack,
+                size: 40,
+              ),
+              color: Colors.black,
+            ),
+            Text(
+              " Coins: ${userModelAsyncValue.value?.coins ?? 0}",
+              style: const TextStyle(
+                  fontSize: h7, fontWeight: FontWeight.bold, color: black),
+            )
+          ]),
+          const Spacer(),
+          IconButton(
+            onPressed: () {},
+            icon: const Iconify(
+              Twemoji.flexed_biceps,
+              color: black,
+              size: 40,
+            ),
+            color: Colors.black,
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           userModelAsyncValue.when(
@@ -84,65 +144,6 @@ class HomeScreen extends ConsumerWidget {
       onTap: (index) {
         ref.read(selectedContentIndexProvider.notifier).state = index;
       },
-    );
-  }
-
-  AppBar customAppBar(int contentIndex) {
-    return AppBar(
-      elevation: 0,
-      toolbarHeight: 100,
-      flexibleSpace: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 124, 119, 80),
-              const Color.fromARGB(255, 224, 218, 198)
-            ],
-
-            begin: Alignment.topCenter, // Start from the top center
-            end: Alignment.bottomCenter, // End at the bottom center
-          ),
-        ),
-      ),
-      backgroundColor: contentIndex == 0
-          ? const Color.fromARGB(255, 25, 166, 253)
-          : Colors.transparent,
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(2),
-        child: Container(
-          color: contentIndex == 0
-              ? const Color.fromARGB(255, 224, 218, 198)
-              : Colors.transparent,
-          height: 1.0,
-        ),
-      ),
-      actions: [
-        Column(children: [
-          IconButton(
-            onPressed: () {},
-            icon: const Iconify(
-              GameIcons.backpack,
-              size: 40,
-            ),
-            color: Colors.black,
-          ),
-          const Text(
-            " Coins: ${112}",
-            style: TextStyle(
-                fontSize: h7, fontWeight: FontWeight.bold, color: black),
-          )
-        ]),
-        const Spacer(),
-        IconButton(
-          onPressed: () {},
-          icon: const Iconify(
-            Twemoji.flexed_biceps,
-            color: black,
-            size: 40,
-          ),
-          color: Colors.black,
-        ),
-      ],
     );
   }
 }

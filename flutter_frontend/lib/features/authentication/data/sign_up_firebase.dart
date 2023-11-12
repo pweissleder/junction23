@@ -17,7 +17,8 @@ Future<UserModel?> signUpUser(String email, String password, String username,
           age: int.parse(age),
           height: double.parse(height),
           weight: double.parse(weight),
-          gender: gender);
+          gender: gender,
+          coins: 0);
       await fetchDataFromServer(userModel);
     });
   } on FirebaseAuthException catch (e) {

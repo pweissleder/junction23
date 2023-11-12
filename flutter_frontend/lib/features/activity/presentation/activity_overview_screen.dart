@@ -26,7 +26,7 @@ class ActivityOverviewScreen extends ConsumerWidget {
               itemCount: activities.length + 1,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return Padding(
+                  return const Padding(
                       padding: EdgeInsets.only(top: 8),
                       child: Center(
                         child: Text(

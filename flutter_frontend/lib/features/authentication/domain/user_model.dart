@@ -6,6 +6,7 @@ class UserModel {
   final double height;
   final double weight;
   final String gender;
+  int coins;
 
   UserModel({
     required this.id,
@@ -15,6 +16,7 @@ class UserModel {
     required this.height,
     required this.weight,
     required this.gender,
+    required this.coins,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class UserModel {
       height: json['height'],
       gender: json["gender"],
       weight: json['weight'],
+      coins: json['coins'],
     );
   }
 
@@ -37,6 +40,7 @@ class UserModel {
         'height': height,
         "gender": gender,
         'weight': weight,
+        'coins': coins,
       };
 
   @override

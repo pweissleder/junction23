@@ -49,6 +49,7 @@ MERGED from [:firebase_auth] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\H
 MERGED from [:cloud_firestore] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\cloud_firestore\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:firebase_core] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-17:12
 MERGED from [:url_launcher_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-16:12
+MERGED from [:path_provider_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:pedometer] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\pedometer\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:android_intent_plus] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\android_intent_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:webview_flutter_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\webview_flutter_android\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
@@ -119,6 +120,8 @@ MERGED from [:firebase_core] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\H
 MERGED from [:firebase_core] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:url_launcher_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:url_launcher_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\url_launcher_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:path_provider_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:path_provider_android] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\path_provider_android\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:pedometer] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\pedometer\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:pedometer] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\pedometer\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:android_intent_plus] C:\Users\breuer-l\Desktop\Programmieren\Hackathon\Huawei\junction23\flutter_frontend\build\android_intent_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41

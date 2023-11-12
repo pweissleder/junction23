@@ -47,6 +47,7 @@ dependencies:
   model_viewer_plus: ^1.7.0
   android_intent_plus: ^4.0.3
   google_fonts: ^6.1.0
+  flython: ^0.2.0
 
 dev_dependencies:
   flutter_test:
