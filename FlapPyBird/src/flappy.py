@@ -21,7 +21,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 current_directory = os.getcwd()
-service_account_key_path = os.path.join(current_directory, 'config', 'junction23-f7df7-firebase-adminsdk-c9vm7-257e9698f3.json')
+service_account_key_path = os.path.join(current_directory, 'config',
+                                        'junction23-f7df7-firebase-adminsdk-c9vm7-257e9698f3.json')
 
 cred = credentials.Certificate(os.path.join(service_account_key_path))
 
@@ -50,7 +51,6 @@ class Flappy:
 
     async def start(self):
         while True:
-
             self.background = Background(self.config)
             self.floor = Floor(self.config)
             self.player = Player(self.config)
@@ -87,7 +87,7 @@ class Flappy:
 
     def check_quit_event(self, event):
         if event.type == QUIT or (
-            event.type == KEYDOWN and event.key == K_ESCAPE
+                event.type == KEYDOWN and event.key == K_ESCAPE
         ):
             pygame.quit()
             sys.exit()
@@ -101,11 +101,10 @@ class Flappy:
     def is_tap_event_laptop(self, event):
         m_left, _, _ = pygame.mouse.get_pressed()
         space_or_up = event.type == KEYDOWN and (
-            event.key == K_SPACE or event.key == K_UP
+                event.key == K_SPACE or event.key == K_UP
         )
         screen_tap = event.type == pygame.FINGERDOWN
         return m_left or space_or_up or screen_tap
-
 
     async def play(self):
         self.score.reset()
@@ -170,4 +169,5 @@ class Flappy:
                     user_ref.update({"coins": new_coins})
                     print(f"Coins updated to {new_coins}")
                 self.score.reset()
+                sys.exit()
             await asyncio.sleep(0)

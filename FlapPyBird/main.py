@@ -5,11 +5,8 @@ import sys
 import mediapipe as mp
 import cv2
 import os
-
-from src.flappy import Flappy
-
-os.chdir(os.path.dirname(sys.argv[0]))
-
+print(os.getcwd())
+from junction23.FlapPyBird.src.flappy import Flappy
 
 def jump_detector(shared_counter):
     # Initialize MediaPipe Pose model.
@@ -62,12 +59,12 @@ def jump_detector(shared_counter):
             # Display jump status.
             if jump_detected:
                 # comment out for dont show window
-                cv2.putText(image, 'Jump Detected', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                #cv2.putText(image, 'Jump Detected', (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
                 jump_detected = False
 
         # Display the image.
         # comment out for dont show window
-        cv2.imshow('MediaPipe Pose', image)
+        #cv2.imshow('MediaPipe Pose', image)
 
         if cv2.waitKey(5) & 0xFF == 27:
             break
@@ -104,4 +101,3 @@ def run_game():
     p2.join()
 
 
-run_game()
